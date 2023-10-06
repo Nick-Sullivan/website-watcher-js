@@ -1,0 +1,13 @@
+
+**/.terraform/*
+**/.terraform.lock.hcl
+
+*.tfstate
+*.tfstate.*
+
+*.zip
+
+*.pyc
+*__pycache__
+
+.venv/*
