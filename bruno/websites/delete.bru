@@ -1,0 +1,29 @@
+meta {
+  name: delete
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{URL}}/websites/2ba847d6-5e39-4c27-931d-e5e1140dccd9
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ID_TOKEN}}
+}
+
+body:json {
+  {
+      "user_id": "test",
+      "website_id": "d869ae4a-3880-4892-a121-64f470065988",
+      "name": "amp",
+      "url": "https://www.amp.com.au/amp-essential-home-loan",
+      "frequency": "DAILY"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

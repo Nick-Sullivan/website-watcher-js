@@ -1,0 +1,26 @@
+meta {
+  name: preview
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{URL}}/websites/preview
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ID_TOKEN}}
+}
+
+body:json {
+  {
+      "url": "https://google.com"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.screenshot_url: isDefined
+}

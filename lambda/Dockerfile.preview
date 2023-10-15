@@ -1,0 +1,7 @@
+ARG BASE_IMAGE_NAME
+FROM ${BASE_IMAGE_NAME}
+
+COPY /handler/ /handler
+COPY layer/python/ /handler
+
+CMD [ "preview.preview" ]

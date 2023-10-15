@@ -1,0 +1,20 @@
+meta {
+  name: website
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{URL}}/websites/2ba847d6-5e39-4c27-931d-e5e1140dccd9
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ID_TOKEN}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.name: isDefined
+}

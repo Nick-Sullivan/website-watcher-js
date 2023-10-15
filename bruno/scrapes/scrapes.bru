@@ -1,0 +1,25 @@
+meta {
+  name: scrapes
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{URL}}/websites/2ba847d6-5e39-4c27-931d-e5e1140dccd9/scrapes
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/x-amz-json-1.1
+  X-Amz-Target: AWSCognitoIdentityProviderService.InitiateAuth
+}
+
+auth:bearer {
+  token: {{ID_TOKEN}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.scrapes: isDefined
+}

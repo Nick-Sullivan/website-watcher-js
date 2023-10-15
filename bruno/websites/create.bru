@@ -1,0 +1,27 @@
+meta {
+  name: create
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{URL}}/websites
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ID_TOKEN}}
+}
+
+body:json {
+  {
+      "name": "throwaway",
+      "url": "https://google.com"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.website_id: isDefined
+}

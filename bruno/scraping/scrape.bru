@@ -1,0 +1,24 @@
+meta {
+  name: scrape
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{URL}}/websites/2ba847d6-5e39-4c27-931d-e5e1140dccd9/scrape
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ID_TOKEN}}
+}
+
+body:json {
+  {}
+}
+
+assert {
+  res.status: eq 200
+  res.body.scrape_id: isDefined
+}

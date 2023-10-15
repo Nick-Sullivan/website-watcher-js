@@ -1,0 +1,10 @@
+{
+    "cognito_client_id": "7o249rb3luv1gj2hdg047b8oqf",
+    "cognito_client_secret": "",
+    "cognito_user_pool_id": "ap-southeast-2_ZFy1POgPW",
+    "cognito_user_pool_arn": "arn:aws:cognito-idp:ap-southeast-2:314077822992:userpool/ap-southeast-2_ZFy1POgPW",
+    "ecr_name": "website-watcher-js",
+    "ecr_url": "314077822992.dkr.ecr.ap-southeast-2.amazonaws.com/website-watcher-js",
+    "s3_snapshot_arn": "arn:aws:s3:::website-watcher-js",
+    "s3_snapshot_name": "website-watcher-js"
+}

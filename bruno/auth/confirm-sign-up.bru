@@ -1,0 +1,37 @@
+meta {
+  name: confirm-sign-up
+  type: http
+  seq: 5
+}
+
+post {
+  url: https://cognito-idp.ap-southeast-2.amazonaws.com
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/x-amz-json-1.1
+  X-Amz-Target: AWSCognitoIdentityProviderService.ConfirmSignUp
+}
+
+body:json {
+  {
+     "Username" : "{{USERNAME}}",
+     "ConfirmationCode" : "883285",
+     "ClientId" : "{{CLIENT_ID}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  ~res.body.AuthenticationResult.IdToken: isString
+  ~res.body.AuthenticationResult.AccessToken: isString
+  ~res.body.AuthenticationResult.RefreshToken: isString
+}
+
+script:post-response {
+  // bru.setEnvVar("ID_TOKEN", res.body.AuthenticationResult.IdToken)
+  // bru.setEnvVar("ACCESS_TOKEN", res.body.AuthenticationResult.AccessToken)
+  // bru.setEnvVar("REFRESH_TOKEN", res.body.AuthenticationResult.RefreshToken)
+}

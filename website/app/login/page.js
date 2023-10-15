@@ -1,27 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-import { authenticate, isLoggedIn } from "@/services/watcherApi";
 import { useRouter } from "next/navigation";
-import LoadingScreen from "@/components/LoadingScreen";
+import { authenticate } from "@/services/auth";
 import WatcherNavbar from "@/components/WatcherNavbar";
 
 export default function Login() {
     const router = useRouter();
-    const [isCheckingRedirect, setIsCheckingRedirect] = useState(true);
-
     const [username, setUsername] = useState("nick.dave.sullivan+1@gmail.com");
     const [password, setPassword] = useState("password");
     const [isLoggingIn, setIsLoggingIn] = useState(false);
-
-    useEffect(() => {
-        if (isLoggedIn()) {
-            console.log("Logged in, redirecting");
-            router.push("/watchers");
-        } else {
-            setIsCheckingRedirect(false);
-        }
-    }, []);
 
     const submitLogin = async () => {
         setIsLoggingIn(true);
@@ -39,10 +27,6 @@ export default function Login() {
     const changePassword = (e) => {
         setPassword(e.target.value);
     };
-
-    if (isCheckingRedirect) {
-        return <LoadingScreen />;
-    }
 
     return (
         <main className="h-screen w-screen bg-slate-100">
@@ -83,6 +67,7 @@ export default function Login() {
                     </div>
                     <Button
                         disabled={isLoggingIn}
+                        isProcessing={isLoggingIn}
                         type="button"
                         onClick={submitLogin}
                     >
