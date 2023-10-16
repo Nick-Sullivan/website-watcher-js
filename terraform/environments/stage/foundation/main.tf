@@ -27,8 +27,8 @@ locals {
   domain                    = "websitewatcherjs.com"
   aws_account_id            = data.aws_caller_identity.identity.account_id
   root_dir                  = "${path.root}/../../../.."
-  website_dir               = "${local.root_dir}/website"
-  lambda_dir                = "${local.root_dir}/lambda"
+  website_dir               = "${local.root_dir}/client"
+  lambda_dir                = "${local.root_dir}/server/lambda"
   automated_tester_username = "nick.dave.sullivan+1@gmail.com"
 
   tags = {

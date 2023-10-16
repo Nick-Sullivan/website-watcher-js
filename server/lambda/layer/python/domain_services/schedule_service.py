@@ -11,6 +11,7 @@ def schedule_scrapes(request: ScheduleScrapeRequest) -> List[Website]:
     websites = website_store.get_list(request.user_id)
     websites_to_scrape = []
 
+    print(f'websites: {websites}')
     for website in websites:
         prev_scrape = scrape_store.get_latest(website.user_id, website.website_id)
         if not (request.ignore_frequency or _is_scrape_needed(website.frequency, prev_scrape)):

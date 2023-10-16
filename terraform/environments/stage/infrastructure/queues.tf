@@ -22,8 +22,8 @@ resource "aws_sqs_queue_redrive_allow_policy" "scrape_queue" {
   })
 }
 
-# resource "aws_lambda_event_source_mapping" "scrape_queue" {
-#   event_source_arn = aws_sqs_queue.scrape_queue.arn
-#   function_name    = aws_lambda_function.scrape_website.function_name
-#   batch_size       = 1
-# }
+resource "aws_lambda_event_source_mapping" "scrape_queue" {
+  event_source_arn = aws_sqs_queue.scrape_queue.arn
+  function_name    = aws_lambda_function.scrape_website.function_name
+  batch_size       = 1
+}

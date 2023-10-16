@@ -46,9 +46,9 @@ resource "aws_s3_bucket_metric" "website" {
 module "template_files" {
   # Calculates the content_type of each file.
   # https://registry.terraform.io/modules/hashicorp/dir/template/latest
-  depends_on = [terraform_data.build]
-  source     = "hashicorp/dir/template"
-  base_dir   = "${local.website_dir}/out"
+  #   depends_on = [terraform_data.build]
+  source   = "hashicorp/dir/template"
+  base_dir = "${local.website_dir}/out"
 }
 
 resource "aws_s3_object" "static_files" {

@@ -55,7 +55,3 @@ resource "aws_cognito_user_pool_client" "users" {
   ]
   generate_secret = false
 }
-
-# resource "random_password" "automated_tester_password" {
-#   length = 16
-# }

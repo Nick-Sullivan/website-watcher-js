@@ -1,12 +1,12 @@
 meta {
-  name: delete
+  name: update
   type: http
-  seq: 5
+  seq: 4
 }
 
-delete {
-  url: {{URL}}/websites/2ba847d6-5e39-4c27-931d-e5e1140dccd9
-  body: none
+put {
+  url: {{URL}}/websites/8facd107-75a6-4f7d-91e4-7993b5499402
+  body: json
   auth: bearer
 }
 
@@ -17,7 +17,7 @@ auth:bearer {
 body:json {
   {
       "user_id": "test",
-      "website_id": "d869ae4a-3880-4892-a121-64f470065988",
+      "website_id": "8facd107-75a6-4f7d-91e4-7993b5499402",
       "name": "amp",
       "url": "https://www.amp.com.au/amp-essential-home-loan",
       "frequency": "DAILY"
@@ -26,4 +26,5 @@ body:json {
 
 assert {
   res.status: eq 200
+  res.body.website_id: isDefined
 }

@@ -11,7 +11,7 @@ resource "aws_api_gateway_authorizer" "gateway" {
 }
 
 resource "aws_api_gateway_deployment" "gateway" {
-  depends_on  = [local.all_integrations]
+  depends_on  = [local.all_integrations] # VSCode is lying, this is fine
   rest_api_id = aws_api_gateway_rest_api.gateway.id
   description = "Terraform deployment"
 

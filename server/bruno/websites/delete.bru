@@ -1,12 +1,12 @@
 meta {
-  name: update
+  name: delete
   type: http
-  seq: 4
+  seq: 5
 }
 
-put {
-  url: {{URL}}/websites/2ba847d6-5e39-4c27-931d-e5e1140dccd9
-  body: json
+delete {
+  url: {{URL}}/websites/8facd107-75a6-4f7d-91e4-7993b5499402
+  body: none
   auth: bearer
 }
 
@@ -26,5 +26,4 @@ body:json {
 
 assert {
   res.status: eq 200
-  res.body.website_id: isDefined
 }

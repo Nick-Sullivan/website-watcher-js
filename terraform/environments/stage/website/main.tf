@@ -24,7 +24,7 @@ locals {
   prefix_lower = "website-watcher-js"
   domain       = "websitewatcherjs.com"
   root_dir     = "${path.root}/../../../.."
-  website_dir  = "${local.root_dir}/website"
+  website_dir  = "${local.root_dir}/client"
 
   tags = {
     Project = "Website Watcher JS Stage"

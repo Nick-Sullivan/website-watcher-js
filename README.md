@@ -1,4 +1,4 @@
-## Creating
+## Steps I did to create
 
 Install NextJS
 
@@ -31,19 +31,18 @@ Install esline VSCode extension, with this: https://stackoverflow.com/questions/
 
 Install prettier VSCode extension, with this: https://nextjs.org/docs/pages/building-your-application/configuring/eslint#prettier
 
-## Getting Started
+## Required tech
 
-First, run the development server:
+Python3.9
+Docker desktop
+Bruno
 
-```bash
-npm run dev
-```
+## Getting started
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+./makefile.ps1 install
+./makefile.ps1 deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Use VSCode Run to run the website locally
 
 ## Notes
 
@@ -53,3 +52,13 @@ https://www.flowbite-react.com/docs/components/card#
 https://github.com/tulupinc/flowbite-next-starter
 https://ui.shadcn.com/docs/installation/next
 https://nextui.org/docs/guide/installation
+
+if docker desktop doesn't start
+open administrator powershell
+
+```bash
+wsl -l -v
+```
+
+if not responding, go to installed apps & features, find Windows Subsystem for Linux, click advanced features. Click repair or reset, then reboot
+then start with wsl.exe
