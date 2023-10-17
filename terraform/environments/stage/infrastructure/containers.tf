@@ -47,6 +47,9 @@ data "aws_ecr_image" "preview_docker_image" {
 }
 
 resource "terraform_data" "scrape_docker_build" {
+  depends_on = [
+    terraform_data.pull_docker_base,
+  ]
   triggers_replace = [
     md5(file("${local.lambda_dir}/Dockerfile.scrape_website")),
     data.archive_file.layer.output_base64sha256,
