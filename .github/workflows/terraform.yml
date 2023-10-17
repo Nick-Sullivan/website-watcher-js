@@ -26,12 +26,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install server libraries
+      - name: Install python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
           cache: "pip"
-      - run: pip install -r server/requirements.txt
+
+      - name: Install server libraries
+        run: pip install -r server/requirements.txt
 
       - name: Server unit tests
         run: pytest server/tests/unit
