@@ -51,5 +51,5 @@ jobs:
       - name: Initialise terraform state
         run: |
           cd terraform/environments/stage/foundation
-          terraform init -backend=false
+          terraform init
           terraform plan
