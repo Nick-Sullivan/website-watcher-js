@@ -56,3 +56,27 @@ jobs:
           cd terraform/environments/stage/foundation
           terraform init
           terraform apply -auto-approve
+
+  deploy_infrastructure:
+    name: "Deploy infrastructure"
+    needs: [deploy_foundation]
+    runs-on: ubuntu-latest
+    environment: stage
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Apply state
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cd terraform/environments/stage/infrastructure
+          terraform init
+          terraform apply -auto-approve
