@@ -4,7 +4,7 @@ resource "random_password" "automated_tester_password" {
 }
 
 resource "aws_cognito_user" "automated_tester" {
-  user_pool_id   = local.foundation_output.cognito_user_pool_id
+  user_pool_id   = data.terraform_remote_state.foundation.outputs.cognito_user_pool_id
   username       = local.automated_tester_username
   password       = random_password.automated_tester_password.result
   message_action = "SUPPRESS"

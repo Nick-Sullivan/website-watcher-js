@@ -21,6 +21,7 @@ provider "aws" {
 
 data "aws_caller_identity" "identity" {}
 
+
 locals {
   prefix                    = "WebsiteWatcherJs"
   prefix_lower              = "website-watcher-js"

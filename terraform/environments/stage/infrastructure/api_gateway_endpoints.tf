@@ -78,7 +78,6 @@ resource "aws_api_gateway_method" "get_websites" {
   http_method   = "GET"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
 }
 
 resource "aws_api_gateway_integration" "get_websites" {
@@ -109,7 +108,6 @@ resource "aws_api_gateway_method" "create_website" {
   http_method   = "POST"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
 }
 
 resource "aws_api_gateway_integration" "create_website" {
@@ -199,7 +197,6 @@ resource "aws_api_gateway_method" "get_website" {
   http_method   = "GET"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
   request_parameters = {
     "method.request.path.website_id" = true
   }
@@ -236,7 +233,6 @@ resource "aws_api_gateway_method" "update_website" {
   http_method   = "PUT"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
   request_parameters = {
     "method.request.path.website_id" = true
   }
@@ -273,7 +269,6 @@ resource "aws_api_gateway_method" "delete_website" {
   http_method   = "DELETE"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
   request_parameters = {
     "method.request.path.website_id" = true
   }
@@ -369,7 +364,6 @@ resource "aws_api_gateway_method" "get_scrapes" {
   http_method   = "GET"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
 }
 
 resource "aws_api_gateway_integration" "get_scrapes" {
@@ -459,7 +453,6 @@ resource "aws_api_gateway_method" "get_scrape" {
   http_method   = "GET"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
   request_parameters = {
     "method.request.path.scrape_id" = true
   }
@@ -505,7 +498,6 @@ resource "aws_api_gateway_method" "get_screenshot" {
   http_method   = "GET"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
 }
 
 resource "aws_api_gateway_integration" "get_screenshot" {
@@ -595,7 +587,6 @@ resource "aws_api_gateway_method" "preview" {
   http_method   = "POST"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
 }
 
 resource "aws_api_gateway_integration" "preview" {
@@ -635,7 +626,6 @@ resource "aws_api_gateway_method" "scrape_websites" {
   http_method   = "POST"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
 }
 
 resource "aws_api_gateway_integration" "scrape_websites" {
@@ -675,7 +665,6 @@ resource "aws_api_gateway_method" "scrape_website" {
   http_method   = "POST"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.gateway.id
-  #   authorization_scopes = local.foundation_output.cognito_custom_scopes
 }
 
 resource "aws_api_gateway_integration" "scrape_website" {
