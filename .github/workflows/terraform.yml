@@ -13,11 +13,9 @@ jobs:
     name: "Something"
     runs-on: ubuntu-latest
     environment: production
-
     defaults:
       run:
         shell: bash
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,11 +34,9 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     environment: production
-
     defaults:
       run:
         shell: bash
-
+    steps:
       - name: Server unit tests
         run: pytest server/tests/unit
-
