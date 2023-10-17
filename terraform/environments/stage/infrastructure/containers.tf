@@ -1,5 +1,15 @@
 
+resource "terraform_data" "pull_docker_base" {
+
+  provisioner "local-exec" {
+    command = "docker pull ${local.foundation_output.ecr_url}:base"
+  }
+}
+
 resource "terraform_data" "preview_docker_build" {
+  depends_on = [
+    terraform_data.pull_docker_base,
+  ]
   triggers_replace = [
     md5(file("${local.lambda_dir}/Dockerfile.preview")),
     data.archive_file.layer.output_base64sha256,
