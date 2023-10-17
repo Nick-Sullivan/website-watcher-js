@@ -82,6 +82,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "ap-southeast-2"
 
+      - name: Setup AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
 
