@@ -1,6 +1,9 @@
 
 resource "terraform_data" "pull_docker_base" {
-
+  provisioner "local-exec" {
+    working_dir = local.lambda_dir
+    command     = "aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin ${local.aws_account_id}.dkr.ecr.ap-southeast-2.amazonaws.com"
+  }
   provisioner "local-exec" {
     command = "docker pull ${local.foundation_output.ecr_url}:base"
   }

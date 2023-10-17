@@ -41,6 +41,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: terraform/environments/stage/foundation
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -55,11 +56,11 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Apply state
-        run: |
-          cd terraform/environments/stage/foundation
-          terraform init
-          terraform apply -auto-approve
+      - name: Initialise terraform state
+        run: terraform init
+
+      - name: Apply terraform state
+        run: terraform apply -auto-approve
 
   deploy_infrastructure:
     name: "Deploy infrastructure"
@@ -69,6 +70,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: terraform/environments/stage/infrastructure
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -83,8 +85,8 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Apply state
-        run: |
-          cd terraform/environments/stage/infrastructure
-          terraform init
-          terraform apply -auto-approve
+      - name: Initialise terraform state
+        run: terraform init
+
+      - name: Apply terraform state
+        run: terraform apply -auto-approve
