@@ -54,4 +54,6 @@ jobs:
           terraform init -backend=false
 
       - name: Plan terraform
-        run: terraform plan
+        run: |
+          cd terraform/environments/stage/foundation
+          terraform plan
