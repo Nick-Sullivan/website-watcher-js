@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: "Build"
+  unit_tests:
+    name: "Unit tests"
     runs-on: ubuntu-latest
     environment: production
     defaults:
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v4
 
-      - name: Install python
+      - name: Setup python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
@@ -33,14 +33,22 @@ jobs:
       - name: Run server unit tests
         run: pytest server/tests/unit
 
-  # test:
-  #   name: "Test"
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   environment: production
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #   steps:
-  #     - name: Server unit tests
-  #       run: pytest server/tests/unit
+  deploy:
+    name: "Deploy"
+    needs: [unit_tests]
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup terraform
+        uses: actions/setup-terraform@v2
+
+      - name: Initialise terraform state
+        run: |
+          cd terraform/environments/stage/foundation
+          terraform init -no-backend
