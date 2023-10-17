@@ -9,15 +9,15 @@ permissions:
   contents: read
 
 jobs:
-  install:
-    name: "Something"
+  build:
+    name: "Build"
     runs-on: ubuntu-latest
     environment: production
     defaults:
       run:
         shell: bash
     steps:
-      - name: Checkout
+      - name: Checkout branch
         uses: actions/checkout@v4
 
       - name: Install python
@@ -29,14 +29,17 @@ jobs:
       - name: Install server libraries
         run: pip install -r server/requirements.txt
 
-  test:
-    name: "Test"
-    needs: [install]
-    runs-on: ubuntu-latest
-    environment: production
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Server unit tests
+      - name: Run server unit tests
         run: pytest server/tests/unit
+
+  # test:
+  #   name: "Test"
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+  #   environment: production
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:
+  #     - name: Server unit tests
+  #       run: pytest server/tests/unit
