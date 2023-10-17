@@ -31,6 +31,9 @@ jobs:
         with:
           python-version: "3.9"
 
+      - name: Install python libs
+        run: pip install -r server/requirements.txt
+
     # # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     # - name: Setup Terraform
     #   uses: hashicorp/setup-terraform@v1
