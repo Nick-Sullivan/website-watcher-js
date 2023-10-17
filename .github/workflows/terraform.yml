@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: "3.9"
           cache: "pip"
-        run: pip install -r server/requirements.txt
+      - run: pip install -r server/requirements.txt
 
       - name: Server unit tests
         run: pytest server/tests/unit
