@@ -1,5 +1,11 @@
 
 resource "terraform_data" "pull_docker_base" {
+  lifecycle {
+    replace_triggered_by = [
+      terraform_data.preview_docker_build,
+      terraform_data.scrape_docker_build
+    ]
+  }
   provisioner "local-exec" {
     working_dir = local.lambda_dir
     command     = "aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin ${local.aws_account_id}.dkr.ecr.ap-southeast-2.amazonaws.com"
