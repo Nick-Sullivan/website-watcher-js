@@ -7,7 +7,7 @@ terraform {
   }
   backend "s3" {
     bucket = "nicks-terraform-states"
-    key    = "website_watcher_js/stage/website/terraform.tfstate"
+    key    = "website_watcher_js/stage/website_deploy/terraform.tfstate"
     region = "ap-southeast-2"
   }
 }

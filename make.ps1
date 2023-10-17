@@ -2,13 +2,6 @@ $ErrorActionPreference = "Stop"
 $command = $args[0]
 
 
-function Build {
-    Write-Output "Building client"
-    Set-Location client
-    npm run build
-    Set-Location ..
-}
-
 function Deploy-Foundation {
     Write-Output "Deploying foundation"
     Set-Location terraform/environments/stage/foundation
@@ -23,9 +16,16 @@ function Deploy-Infrastructure {
     Set-Location ../../../..
 }
 
+function Build-Website {
+    Write-Output "Building website"
+    Set-Location terraform/environments/stage/website_build
+    terraform apply
+    Set-Location ../../../..
+}
+
 function Deploy-Website {
     Write-Output "Deploying website"
-    Set-Location terraform/environments/stage/website
+    Set-Location terraform/environments/stage/website_deploy
     terraform apply
     Set-Location ../../../..
 }
@@ -71,13 +71,11 @@ function Test-Api {
     deactivate
 }
 
-
-
 switch ($command) {
-    "build" { Build }
     "deploy" { 
         Deploy-Foundation
         Deploy-Infrastructure
+        Build-Website
         Deploy-Website
     }
     "deploy-foundation" { Deploy-Foundation }
