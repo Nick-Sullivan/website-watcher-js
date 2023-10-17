@@ -20,13 +20,16 @@ jobs:
         shell: bash
 
     steps:
-      # Echo
       - name: Echo
         run: echo "hello"
 
-      # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
 
     # # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     # - name: Setup Terraform
