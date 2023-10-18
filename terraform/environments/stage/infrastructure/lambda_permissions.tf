@@ -122,7 +122,7 @@ data "aws_iam_policy_document" "upload_to_s3" {
       "s3:PutObjectAcl",
     ]
     effect    = "Allow"
-    resources = ["${local.foundation_output.s3_snapshot_arn}/*"]
+    resources = ["${data.aws_ssm_parameter.s3_snapshot_arn.value}/*"]
   }
 }
 
@@ -132,7 +132,7 @@ data "aws_iam_policy_document" "read_s3" {
       "s3:GetObject",
     ]
     effect    = "Allow"
-    resources = ["${local.foundation_output.s3_snapshot_arn}/*"]
+    resources = ["${data.aws_ssm_parameter.s3_snapshot_arn.value}/*"]
   }
 }
 
@@ -142,6 +142,6 @@ data "aws_iam_policy_document" "delete_s3" {
       "s3:DeleteObject",
     ]
     effect    = "Allow"
-    resources = ["${local.foundation_output.s3_snapshot_arn}/*"]
+    resources = ["${data.aws_ssm_parameter.s3_snapshot_arn.value}/*"]
   }
 }

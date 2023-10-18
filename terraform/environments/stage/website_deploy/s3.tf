@@ -42,7 +42,6 @@ resource "aws_s3_bucket_metric" "website" {
   name   = local.prefix
 }
 
-# TODO - this uses the files from the start of the apply, but files are generated from the apply. so we have to run twice
 module "template_files" {
   # Calculates the content_type of each file.
   # https://registry.terraform.io/modules/hashicorp/dir/template/latest

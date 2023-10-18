@@ -6,7 +6,7 @@
         "type": "node-terminal",
         "request": "launch",
         "command": "npm run dev",
-        "cwd": "${workspaceFolder}/website",
+        "cwd": "${workspaceFolder}/client",
         "serverReadyAction": {
           "pattern": "- Local:.+(https?://.+)",
           "uriFormat": "%s",

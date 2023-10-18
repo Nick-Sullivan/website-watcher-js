@@ -19,21 +19,12 @@ provider "aws" {
   }
 }
 
-data "aws_caller_identity" "identity" {}
-
-
-data "terraform_remote_state" "foundation" {
-  backend = "s3"
-  config = {
-    bucket = "nicks-terraform-states"
-    key    = "website_watcher_js/stage/foundation/terraform.tfstate"
-    region = "ap-southeast-2"
-  }
-}
 
 locals {
+
   prefix                    = "WebsiteWatcherJs"
   prefix_lower              = "website-watcher-js"
+  prefix_upper              = "WEBSITE_WATCHER_JS"
   domain                    = "websitewatcherjs.com"
   aws_account_id            = data.aws_caller_identity.identity.account_id
   automated_tester_username = "nick.dave.sullivan+testing@gmail.com"
@@ -42,7 +33,6 @@ locals {
   server_dir                = "${local.root_dir}/server"
   bruno_dir                 = "${local.server_dir}/bruno"
   lambda_dir                = "${local.server_dir}/lambda"
-  foundation_output         = data.terraform_remote_state.foundation.outputs
 
   lambda_names = {
     "create_website"   = "${local.prefix}-CreateWebsite"

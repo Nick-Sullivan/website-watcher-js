@@ -81,6 +81,7 @@ switch ($command) {
     "deploy-foundation" { Deploy-Foundation }
     "deploy-infra" { Deploy-Infrastructure }
     "deploy-website" { Deploy-Website }
+    "website-build" { Build-Website }
     "freeze" { Freeze }
     "install" { 
         Install-Server 

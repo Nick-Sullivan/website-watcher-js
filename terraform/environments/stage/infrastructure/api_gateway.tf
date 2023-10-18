@@ -7,7 +7,7 @@ resource "aws_api_gateway_authorizer" "gateway" {
   name          = "cognito"
   rest_api_id   = aws_api_gateway_rest_api.gateway.id
   type          = "COGNITO_USER_POOLS"
-  provider_arns = [local.foundation_output.cognito_user_pool_arn]
+  provider_arns = [data.aws_ssm_parameter.cognito_user_pool_arn.value]
 }
 
 resource "aws_api_gateway_deployment" "gateway" {

@@ -25,6 +25,7 @@ data "aws_caller_identity" "identity" {}
 locals {
   prefix                    = "WebsiteWatcherJs"
   prefix_lower              = "website-watcher-js"
+  prefix_upper              = "WEBSITE_WATCHER_JS"
   domain                    = "websitewatcherjs.com"
   aws_account_id            = data.aws_caller_identity.identity.account_id
   root_dir                  = "${path.root}/../../../.."

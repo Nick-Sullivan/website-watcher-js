@@ -20,8 +20,9 @@ provider "aws" {
 }
 
 locals {
-  root_dir    = "${path.root}/../../../.."
-  website_dir = "${local.root_dir}/client"
+  prefix_upper = "WEBSITE_WATCHER_JS"
+  root_dir     = "${path.root}/../../../.."
+  website_dir  = "${local.root_dir}/client"
 
   tags = {
     Project = "Website Watcher JS Stage"

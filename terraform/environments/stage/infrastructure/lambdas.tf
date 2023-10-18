@@ -71,7 +71,7 @@ resource "aws_lambda_function" "delete_website" {
     variables = {
       "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
       "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
-      "SCREENSHOT_BUCKET_NAME" : local.foundation_output.s3_snapshot_name,
+      "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
     }
   }
 }
@@ -168,7 +168,7 @@ resource "aws_lambda_function" "get_screenshot" {
   environment {
     variables = {
       "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
-      "SCREENSHOT_BUCKET_NAME" : local.foundation_output.s3_snapshot_name,
+      "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
     }
   }
 }
@@ -246,7 +246,7 @@ resource "aws_iam_role" "get_websites" {
 
 resource "aws_lambda_function" "preview" {
   package_type  = "Image"
-  image_uri     = "${local.foundation_output.ecr_url}@${data.aws_ecr_image.preview_docker_image.id}"
+  image_uri     = "${data.aws_ssm_parameter.ecr_url.value}@${data.aws_ecr_image.preview_docker_image.id}"
   function_name = local.lambda_names["preview"]
   role          = aws_iam_role.preview.arn
   memory_size   = 2048 # MB
@@ -257,7 +257,7 @@ resource "aws_lambda_function" "preview" {
   ]
   environment {
     variables = {
-      "SCREENSHOT_BUCKET_NAME" : local.foundation_output.s3_snapshot_name,
+      "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
       "USES_PLAYWRIGHT" : "True",
     }
   }
@@ -314,7 +314,7 @@ resource "aws_iam_role" "schedule_scrapes" {
 
 resource "aws_lambda_function" "scrape_website" {
   package_type  = "Image"
-  image_uri     = "${local.foundation_output.ecr_url}@${data.aws_ecr_image.scrape_docker_image.id}"
+  image_uri     = "${data.aws_ssm_parameter.ecr_url.value}@${data.aws_ecr_image.scrape_docker_image.id}"
   function_name = local.lambda_names["scrape_website"]
   role          = aws_iam_role.scrape_website.arn
   memory_size   = 2048 # MB
@@ -325,7 +325,7 @@ resource "aws_lambda_function" "scrape_website" {
   ]
   environment {
     variables = {
-      "SCREENSHOT_BUCKET_NAME" : local.foundation_output.s3_snapshot_name,
+      "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
       "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
       "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
       "USES_PLAYWRIGHT" : "True",

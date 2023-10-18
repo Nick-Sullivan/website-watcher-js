@@ -22,6 +22,7 @@ provider "aws" {
 locals {
   prefix       = "WebsiteWatcherJs"
   prefix_lower = "website-watcher-js"
+  prefix_upper = "WEBSITE_WATCHER_JS"
   domain       = "websitewatcherjs.com"
   root_dir     = "${path.root}/../../../.."
   website_dir  = "${local.root_dir}/client"
