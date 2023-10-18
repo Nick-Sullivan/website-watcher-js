@@ -115,11 +115,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "ap-southeast-2"
 
-      - name: Setup NextJS
+      - name: Setup NodeJS
         uses: actions/setup-node@v3
 
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: Install NodeJS libraries
+        working-directory: client
+        run: npm install
 
       - name: Initialise terraform state
         run: terraform init
