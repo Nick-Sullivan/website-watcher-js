@@ -1,4 +1,4 @@
-name: "Terraform"
+name: "Stage deployment"
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
       - name: Run server unit tests
         run: pytest server/tests/unit
 
-  deploy_foundation:
+  deploy_infrastructure:
     name: "Deploy foundation"
     needs: [unit_tests]
     runs-on: ubuntu-latest
@@ -41,36 +41,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: terraform/environments/stage/foundation
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
-
-      - name: Setup AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "ap-southeast-2"
-
-      - name: Setup terraform
-        uses: hashicorp/setup-terraform@v2
-
-      - name: Initialise terraform state
-        run: terraform init
-
-      - name: Apply terraform state
-        run: terraform apply -auto-approve
-
-  deploy_infrastructure:
-    name: "Deploy infrastructure"
-    needs: [deploy_foundation]
-    runs-on: ubuntu-latest
-    environment: stage
-    defaults:
-      run:
-        shell: bash
-        working-directory: terraform/environments/stage/infrastructure
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -89,10 +59,20 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Initialise terraform state
+      - name: Initialise terraform state (foundation)
+        working-directory: terraform/environments/stage/foundation
         run: terraform init
 
-      - name: Apply terraform state
+      - name: Apply terraform state (foundation)
+        working-directory: terraform/environments/stage/foundation
+        run: terraform apply -auto-approve
+
+      - name: Initialise terraform state (infrastructure)
+        working-directory: terraform/environments/stage/infrastructure
+        run: terraform init
+
+      - name: Apply terraform state (infrastructure)
+        working-directory: terraform/environments/stage/infrastructure
         run: terraform apply -auto-approve
 
   build_website:
@@ -117,13 +97,16 @@ jobs:
 
       - name: Setup NodeJS
         uses: actions/setup-node@v3
+        with:
+          cache: "npm"
+          cache-dependency-path: "client/package-lock.json"
 
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Install NodeJS libraries
-        working-directory: client
-        run: npm install
+      #   - name: Install NodeJS libraries
+      #     working-directory: client
+      #     run: npm install
 
       - name: Initialise terraform state
         run: terraform init
@@ -138,34 +121,6 @@ jobs:
       - name: Apply terraform state (deploy)
         working-directory: terraform/environments/stage/website_deploy
         run: terraform apply -auto-approve
-
-  #   deploy_website:
-  #     name: "Deploy website"
-  #     needs: [build_website]
-  #     runs-on: ubuntu-latest
-  #     environment: stage
-  #     defaults:
-  #       run:
-  #         shell: bash
-  #         working-directory: terraform/environments/stage/website_deploy
-  #     steps:
-  #       - name: Checkout branch
-  #         uses: actions/checkout@v4
-
-  #       - name: Setup AWS credentials
-  #         uses: aws-actions/configure-aws-credentials@v4
-  #         with:
-  #           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #           aws-region: "ap-southeast-2"
-  #       - name: Setup terraform
-  #         uses: hashicorp/setup-terraform@v2
-
-  #       - name: Initialise terraform state
-  #         run: terraform init
-
-  #       - name: Apply terraform state
-  #         run: terraform apply -auto-approve
 
   api_tests:
     name: "API Tests"
