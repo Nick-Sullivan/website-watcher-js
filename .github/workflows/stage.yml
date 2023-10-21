@@ -12,7 +12,7 @@ jobs:
   unit_tests:
     name: "Unit tests"
     runs-on: ubuntu-latest
-    environment: stage
+    timeout-minutes: 10
     defaults:
       run:
         shell: bash
@@ -37,6 +37,7 @@ jobs:
     name: "Deploy infrastructure"
     needs: [unit_tests]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         shell: bash
@@ -78,10 +79,11 @@ jobs:
     name: "Build website"
     needs: [deploy_infrastructure]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         shell: bash
-        working-directory: terraform/website_deploy
+
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -102,24 +104,27 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
 
-      #   - name: Install NodeJS libraries
-      #     working-directory: client
-      #     run: npm install
+      - name: Install NodeJS libraries
+        working-directory: client
+        run: npm install
 
       - name: Build website
         working-directory: client
         run: npm run build
 
       - name: Initialise terraform state
+        working-directory: terraform/website_deploy
         run: terraform init -backend-config "key=website_watcher_js/stage/website_deploy/terraform.tfstate"
 
       - name: Apply terraform state
+        working-directory: terraform/website_deploy
         run: terraform apply -auto-approve -var="environment=stage"
 
   api_tests:
     name: "API Tests"
     needs: [deploy_infrastructure]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         shell: bash
