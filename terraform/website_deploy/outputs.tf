@@ -4,7 +4,7 @@ output "website_endpoint" {
 }
 
 resource "aws_ssm_parameter" "website_url" {
-  name  = "${local.prefix_upper}_WEBSITE_URL"
+  name  = "${local.prefix_parameter}/WebsiteUrl"
   type  = "String"
   value = aws_s3_bucket_website_configuration.website.website_endpoint
 }

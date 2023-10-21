@@ -1,3 +1,5 @@
+# NEW
+
 data "archive_file" "layer" {
   type        = "zip"
   source_dir  = "${local.lambda_dir}/layer"
@@ -11,6 +13,12 @@ data "archive_file" "handler" {
   excludes    = ["__pycache__.py"]
   output_path = "${local.lambda_dir}/zip/handler.zip"
 }
+
+# OLD
+
+
+
+
 
 resource "aws_lambda_layer_version" "layer" {
   filename            = "${local.lambda_dir}/zip/layer.zip"

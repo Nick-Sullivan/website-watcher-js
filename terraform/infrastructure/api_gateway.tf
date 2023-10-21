@@ -42,6 +42,7 @@ resource "aws_api_gateway_stage" "gateway" {
 }
 
 resource "aws_lambda_permission" "gateway" {
+  depends_on    = [local.all_integrations]
   for_each      = local.lambda_names
   function_name = each.value
   statement_id  = "AllowExecutionFromAPIGateway"

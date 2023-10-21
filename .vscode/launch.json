@@ -12,6 +12,14 @@
           "uriFormat": "%s",
           "action": "debugWithChrome"
         }
+      },
+      {
+        "name": "Local server",
+        "type": "python",
+        "request": "launch",
+        "program": "server/lambda/local.py",
+        "console": "integratedTerminal",
+        "justMyCode": true
       }
     ]
   }

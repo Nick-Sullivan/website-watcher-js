@@ -36,6 +36,7 @@ Install prettier VSCode extension, with this: https://nextjs.org/docs/pages/buil
 Python3.9
 Docker desktop
 Bruno
+Terraform
 
 ## Getting started
 
@@ -62,3 +63,16 @@ wsl -l -v
 
 if not responding, go to installed apps & features, find Windows Subsystem for Linux, click advanced features. Click repair or reset, then reboot
 then start with wsl.exe
+
+## Rules
+
+Able to run server locally with no internet connection (and hit with bruno/client/api tests)
+Able to run server locally and point to cloud resources
+Able to run client locally
+Switching from local to development is in a single location
+Able to spin up a custom environment
+Minimal difference between CICD and dev setup
+As few technologies as possible
+Each endpoint has its own cloudwatch log group
+Installing is a single command
+A makefile can help, but all steps should be able to be done simply

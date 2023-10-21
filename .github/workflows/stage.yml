@@ -34,10 +34,9 @@ jobs:
         run: pytest server/tests/unit
 
   deploy_infrastructure:
-    name: "Deploy foundation"
+    name: "Deploy infrastructure"
     needs: [unit_tests]
     runs-on: ubuntu-latest
-    environment: stage
     defaults:
       run:
         shell: bash
@@ -60,30 +59,29 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Initialise terraform state (foundation)
-        working-directory: terraform/environments/stage/foundation
+        working-directory: terraform/foundation
         run: terraform init
 
       - name: Apply terraform state (foundation)
-        working-directory: terraform/environments/stage/foundation
-        run: terraform apply -auto-approve
+        working-directory: terraform/foundation
+        run: terraform apply -auto-approve -var="environment=stage"
 
       - name: Initialise terraform state (infrastructure)
-        working-directory: terraform/environments/stage/infrastructure
+        working-directory: terraform/infrastructure
         run: terraform init
 
       - name: Apply terraform state (infrastructure)
-        working-directory: terraform/environments/stage/infrastructure
-        run: terraform apply -auto-approve
+        working-directory: terraform/infrastructure
+        run: terraform apply -auto-approve -var="environment=stage"
 
   build_website:
     name: "Build website"
     needs: [deploy_infrastructure]
     runs-on: ubuntu-latest
-    environment: stage
     defaults:
       run:
         shell: bash
-        working-directory: terraform/environments/stage/website_build
+        working-directory: terraform/website_deploy
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -108,25 +106,20 @@ jobs:
       #     working-directory: client
       #     run: npm install
 
+      - name: Build website
+        working-directory: client
+        run: npm run build
+
       - name: Initialise terraform state
         run: terraform init
 
       - name: Apply terraform state
-        run: terraform apply -auto-approve
-
-      - name: Initialise terraform state (deploy)
-        working-directory: terraform/environments/stage/website_deploy
-        run: terraform init
-
-      - name: Apply terraform state (deploy)
-        working-directory: terraform/environments/stage/website_deploy
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="environment=stage"
 
   api_tests:
     name: "API Tests"
     needs: [deploy_infrastructure]
     runs-on: ubuntu-latest
-    environment: stage
     defaults:
       run:
         shell: bash

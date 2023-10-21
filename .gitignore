@@ -4,6 +4,7 @@
 
 *.tfstate
 *.tfstate.*
+*.tfvars
 
 *.zip
 
@@ -13,3 +14,4 @@
 server/.venv/*
 
 */.env
+.env
