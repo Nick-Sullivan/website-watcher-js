@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "websites_db_query" {
     ]
     effect = "Allow"
     resources = [
-      aws_dynamodb_table.websites.arn,
+      data.aws_ssm_parameter.db_website_arn.value,
     ]
   }
 }
@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "websites_db_put" {
     ]
     effect = "Allow"
     resources = [
-      aws_dynamodb_table.websites.arn,
+      data.aws_ssm_parameter.db_website_arn.value,
     ]
   }
 }
@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "websites_db_delete" {
     ]
     effect = "Allow"
     resources = [
-      aws_dynamodb_table.websites.arn,
+      data.aws_ssm_parameter.db_website_arn.value,
     ]
   }
 }
@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "scrape_db_query" {
     ]
     effect = "Allow"
     resources = [
-      aws_dynamodb_table.scrape.arn,
+      data.aws_ssm_parameter.db_scrape_arn.value,
     ]
   }
 }
@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "scrape_db_put" {
     ]
     effect = "Allow"
     resources = [
-      aws_dynamodb_table.scrape.arn,
+      data.aws_ssm_parameter.db_scrape_arn.value,
     ]
   }
 }
@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "scrape_db_delete" {
     ]
     effect = "Allow"
     resources = [
-      aws_dynamodb_table.scrape.arn,
+      data.aws_ssm_parameter.db_scrape_arn.value,
     ]
   }
 }

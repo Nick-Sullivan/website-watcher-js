@@ -45,7 +45,7 @@ resource "aws_lambda_function" "create_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
 }
@@ -77,8 +77,8 @@ resource "aws_lambda_function" "delete_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
-      "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
+      "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
       "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
     }
   }
@@ -119,7 +119,7 @@ resource "aws_lambda_function" "get_scrape" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
+      "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
     }
   }
 }
@@ -147,7 +147,7 @@ resource "aws_lambda_function" "get_scrapes" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
+      "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
     }
   }
 }
@@ -175,7 +175,7 @@ resource "aws_lambda_function" "get_screenshot" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
+      "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
       "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
     }
   }
@@ -208,7 +208,7 @@ resource "aws_lambda_function" "get_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
 }
@@ -236,7 +236,7 @@ resource "aws_lambda_function" "get_websites" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
 }
@@ -294,9 +294,9 @@ resource "aws_lambda_function" "schedule_scrapes" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
+      "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
       "SQS_URL" : aws_sqs_queue.scrape_queue.url,
-      "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
 }
@@ -334,8 +334,8 @@ resource "aws_lambda_function" "scrape_website" {
   environment {
     variables = {
       "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
-      "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
-      "SCRAPE_TABLE_NAME" : aws_dynamodb_table.scrape.name,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
+      "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
       "USES_PLAYWRIGHT" : "True",
     }
   }
@@ -376,7 +376,7 @@ resource "aws_lambda_function" "update_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "WEBSITE_TABLE_NAME" : aws_dynamodb_table.websites.name,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
 }

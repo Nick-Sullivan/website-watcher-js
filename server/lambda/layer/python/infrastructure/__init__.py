@@ -2,7 +2,7 @@ import os
 
 import boto3
 
-is_local = os.environ.get('IS_LOCAL') == 'True'
+is_local = os.environ.get('USE_LOCAL_INFRA').lower() == 'true'
 
 if is_local:
     from .local.screenshot_store import FakeScreenshotStore

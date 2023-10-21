@@ -13,6 +13,22 @@ data "aws_ssm_parameter" "cognito_user_pool_id" {
   name = "${local.prefix_parameter}/Cognito/UserPool/Id"
 }
 
+data "aws_ssm_parameter" "db_scrape_arn" {
+  name = "${local.prefix_parameter}/Db/Scrape/Arn"
+}
+
+data "aws_ssm_parameter" "db_scrape_name" {
+  name = "${local.prefix_parameter}/Db/Scrape/Name"
+}
+
+data "aws_ssm_parameter" "db_website_arn" {
+  name = "${local.prefix_parameter}/Db/Website/Arn"
+}
+
+data "aws_ssm_parameter" "db_website_name" {
+  name = "${local.prefix_parameter}/Db/Website/Name"
+}
+
 data "aws_ssm_parameter" "ecr_name" {
   name = "${local.prefix_parameter}/Ecr/Name"
 }

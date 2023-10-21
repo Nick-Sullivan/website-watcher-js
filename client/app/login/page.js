@@ -7,7 +7,7 @@ import WatcherNavbar from "@/components/WatcherNavbar";
 
 export default function Login() {
     const router = useRouter();
-    const [username, setUsername] = useState("nick.dave.sullivan+1@gmail.com");
+    const [username, setUsername] = useState("nick.dave.sullivan@gmail.com");
     const [password, setPassword] = useState("password");
     const [isLoggingIn, setIsLoggingIn] = useState(false);
 

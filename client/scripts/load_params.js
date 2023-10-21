@@ -4,16 +4,16 @@ let dotenv = require("dotenv");
 let fs = require("fs");
 
 dotenv.config({ path: "../.env" });
+
+let isLocal = process.env.USE_LOCAL_SERVER.toLowerCase() === "true";
 let env = process.env.ENVIRONMENT.toLowerCase();
 env = env.charAt(0).toUpperCase() + env.slice(1);
 
 const prefix = `/WebsiteWatcherJs/${env}`;
 const names = {};
-names[`${prefix}/ApiGateway/Url`] = "API_GATEWAY_URL";
-names[`${prefix}/AutomatedTester/Username`] = "AUTOMATED_TESTER_USERNAME";
-names[`${prefix}/AutomatedTester/Password`] = "AUTOMATED_TESTER_PASSWORD";
-names[`${prefix}/Cognito/ClientId`] = "COGNITO_CLIENT_ID";
-names[`${prefix}/Cognito/UserPool/Id`] = "COGNITO_USER_POOL_ID";
+names[`${prefix}/ApiGateway/Url`] = "NEXT_PUBLIC_API_GATEWAY_URL";
+names[`${prefix}/Cognito/Region`] = "NEXT_PUBLIC_COGNITO_REGION";
+names[`${prefix}/Cognito/ClientId`] = "NEXT_PUBLIC_COGNITO_CLIENT_ID";
 
 const input = {
     Names: Object.keys(names),
@@ -24,7 +24,10 @@ client.send(new aws.GetParametersCommand(input)).then((response) => {
     let content = "";
     for (let parameter of response.Parameters) {
         const name = names[parameter["Name"]];
-        const value = parameter["Value"];
+        let value = parameter["Value"];
+        if (name === "NEXT_PUBLIC_API_GATEWAY_URL" && isLocal) {
+            value = "http://127.0.0.1:8000";
+        }
         content += `${name}=${value}\r\n`;
     }
     fs.writeFileSync(".env", content);

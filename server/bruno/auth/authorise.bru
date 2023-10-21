@@ -29,8 +29,8 @@ body:json {
 assert {
   res.status: eq 200
   res.body.AuthenticationResult.IdToken: isString
-  res.body.AuthenticationResult.AccessToken: isString 
-  res.body.AuthenticationResult.RefreshToken: isString 
+  res.body.AuthenticationResult.AccessToken: isString
+  res.body.AuthenticationResult.RefreshToken: isString
 }
 
 script:post-response {

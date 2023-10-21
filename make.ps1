@@ -67,7 +67,6 @@ function Init-Website-Deploy([string]$environment) {
     Set-Location ../..
 }
 
-
 function Test-Server {
     Write-Output "Running unit tests for the server"
     ./server/.venv/Scripts/activate
@@ -132,6 +131,7 @@ switch ($command) {
             Init-Foundation $environment
             Init-Infrastructure $environment
             Init-Website-Deploy $environment
+            Init-Client
         } else {
             Write-Output "Did not find the environment"
         }
