@@ -1,5 +1,8 @@
 name: "Stage deployment"
 
+env:
+  ENVIRONMENT: "stage"
+
 on:
   push:
     branches: ["master"]
@@ -61,22 +64,23 @@ jobs:
 
       - name: Initialise terraform state (foundation)
         working-directory: terraform/foundation
-        run: terraform init -backend-config "key=website_watcher_js/stage/foundation/terraform.tfstate"
+        run: terraform init -backend-config "key=website_watcher_js/${{env.ENVIRONMENT}}/foundation/terraform.tfstate"
 
       - name: Apply terraform state (foundation)
         working-directory: terraform/foundation
-        run: terraform apply -auto-approve -var="environment=stage"
+        run: terraform apply -auto-approve -var="environment=${{env.ENVIRONMENT}}"
 
       - name: Initialise terraform state (infrastructure)
         working-directory: terraform/infrastructure
-        run: terraform init -backend-config "key=website_watcher_js/stage/infrastructure/terraform.tfstate"
+        run: terraform init -backend-config "key=website_watcher_js/${{env.ENVIRONMENT}}/infrastructure/terraform.tfstate"
 
       - name: Apply terraform state (infrastructure)
         working-directory: terraform/infrastructure
-        run: terraform apply -auto-approve -var="environment=stage"
+        run: terraform apply -auto-approve -var="environment=${{env.ENVIRONMENT}}"
 
   build_website:
     name: "Build website"
+
     needs: [deploy_infrastructure]
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -114,11 +118,11 @@ jobs:
 
       - name: Initialise terraform state
         working-directory: terraform/website_deploy
-        run: terraform init -backend-config "key=website_watcher_js/stage/website_deploy/terraform.tfstate"
+        run: terraform init -backend-config "key=website_watcher_js/${{env.ENVIRONMENT}}/website_deploy/terraform.tfstate"
 
       - name: Apply terraform state
         working-directory: terraform/website_deploy
-        run: terraform apply -auto-approve -var="environment=stage"
+        run: terraform apply -auto-approve -var="environment=${{env.ENVIRONMENT}}"
 
   api_tests:
     name: "API Tests"
