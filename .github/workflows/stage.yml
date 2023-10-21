@@ -60,7 +60,7 @@ jobs:
 
       - name: Initialise terraform state (foundation)
         working-directory: terraform/foundation
-        run: terraform init
+        run: terraform init -backend-config "key=website_watcher_js/stage/foundation/terraform.tfstate"
 
       - name: Apply terraform state (foundation)
         working-directory: terraform/foundation
@@ -68,7 +68,7 @@ jobs:
 
       - name: Initialise terraform state (infrastructure)
         working-directory: terraform/infrastructure
-        run: terraform init
+        run: terraform init -backend-config "key=website_watcher_js/stage/infrastructure/terraform.tfstate"
 
       - name: Apply terraform state (infrastructure)
         working-directory: terraform/infrastructure
@@ -111,7 +111,7 @@ jobs:
         run: npm run build
 
       - name: Initialise terraform state
-        run: terraform init
+        run: terraform init -backend-config "key=website_watcher_js/stage/website_deploy/terraform.tfstate"
 
       - name: Apply terraform state
         run: terraform apply -auto-approve -var="environment=stage"
