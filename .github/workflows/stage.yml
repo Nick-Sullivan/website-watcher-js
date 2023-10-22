@@ -34,7 +34,8 @@ jobs:
         run: pip install -r server/requirements.txt
 
       - name: Run server unit tests
-        run: pytest server/tests/unit
+        working-directory: server
+        run: pytest tests/unit
 
   deploy_infrastructure:
     name: "Deploy infrastructure"
@@ -154,4 +155,5 @@ jobs:
         run: pip install -r server/requirements.txt
 
       - name: Run server api tests
-        run: pytest server/tests/api
+        working-directory: server
+        run: pytest tests/api
