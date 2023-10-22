@@ -76,3 +76,8 @@ As few technologies as possible
 Each endpoint has its own cloudwatch log group
 Installing is a single command
 A makefile can help, but all steps should be able to be done simply
+
+# Notes
+
+- apply before destroy
+- don't mix local with CICD terraform

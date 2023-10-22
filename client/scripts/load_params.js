@@ -5,7 +5,8 @@ let fs = require("fs");
 
 dotenv.config({ path: "../.env" });
 
-let isLocal = process.env.USE_LOCAL_SERVER.toLowerCase() === "true";
+let isLocal =
+    (process.env.USE_LOCAL_SERVER ?? "false").toLowerCase() === "true";
 let env = process.env.ENVIRONMENT.toLowerCase();
 env = env.charAt(0).toUpperCase() + env.slice(1);
 
