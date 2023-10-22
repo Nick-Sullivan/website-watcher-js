@@ -19,4 +19,7 @@
         "editor.formatOnType": false,
         "editor.detectIndentation": false,
     },
+    "[yml]": {
+        "editor.tabSize": 2
+    }
 }
