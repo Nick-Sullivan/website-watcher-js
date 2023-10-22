@@ -20,7 +20,7 @@ provider "aws" {
 }
 
 locals {
-  prefix           = "WebsiteWatcherJs-${var.environment}"
+  prefix           = "WebsiteWatcherJs-${title(var.environment)}"
   prefix_parameter = "/WebsiteWatcherJs/${title(var.environment)}"
   domain           = "websitewatcherjs-${lower(var.environment)}.com"
   root_dir         = "${path.root}/../.."

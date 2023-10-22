@@ -59,7 +59,7 @@ resource "aws_api_gateway_account" "gateway" {
 }
 
 resource "aws_iam_role" "write_to_cloudwatch" {
-  name               = "${local.prefix}WriteToCloudWatch"
+  name               = "${local.prefix}-WriteToCloudWatch"
   description        = "Allows API Gateway to write to cloudwatch logs"
   assume_role_policy = data.aws_iam_policy_document.gateway_assume_role.json
 }
