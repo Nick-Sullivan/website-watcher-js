@@ -1,5 +1,5 @@
 import { getCookie, hasCookie, setCookie } from "cookies-next";
-import { COOKIE_ID_TOKEN } from "@/services/constants";
+import { COOKIE_KEY_ID_TOKEN } from "@/services/constants";
 
 import {
     CognitoIdentityProviderClient,
@@ -7,7 +7,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 
 export const isLoggedIn = () => {
-    const hasIdToken = hasCookie(COOKIE_ID_TOKEN);
+    const hasIdToken = hasCookie(COOKIE_KEY_ID_TOKEN);
     return hasIdToken;
 };
 
@@ -29,7 +29,7 @@ export const authenticate = async (username, password) => {
         const idToken = response.AuthenticationResult.IdToken;
         console.log("setting cookie");
         // TODO, make secure and HTTP only.
-        setCookie(COOKIE_ID_TOKEN, idToken);
+        setCookie(COOKIE_KEY_ID_TOKEN, idToken);
         // console.log("getting cookie");
         // const hasIdToken = getCookie(process.env.NEXT_PUBLIC_COOKIE_ID_TOKEN);
         // console.log(hasIdToken);

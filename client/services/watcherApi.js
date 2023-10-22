@@ -1,5 +1,6 @@
 import { Watcher } from "@/models/Watcher";
 import { getCookie } from "cookies-next";
+import { COOKIE_KEY_ID_TOKEN } from "@/services/constants";
 
 export const getCatFacts = async () => {
     const rawResponse = await fetch("https://cat-fact.herokuapp.com/facts");
@@ -15,7 +16,7 @@ export const getCatFacts = async () => {
 export const getWatchers = async () => {
     // return await getCatFacts();
     const url = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/websites`;
-    const idToken = getCookie(process.env.NEXT_PUBLIC_COOKIE_ID_TOKEN);
+    const idToken = getCookie(COOKIE_KEY_ID_TOKEN);
     console.log(idToken);
     const headers = { Authentication: `Bearer ${idToken}` };
 

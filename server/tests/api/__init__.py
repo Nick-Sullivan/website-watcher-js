@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 
 os.environ['USE_LOCAL_INFRA'] = 'False'
 
-sys.path.append('server/lambda/')
-sys.path.append('server/lambda/layer/python/')
+sys.path.append('lambda/')
+sys.path.append('lambda/layer/python/')
 
 # If this is CICD, the environment to test is passed by environment variables.
 # If this is local, the environment to test is in the root .env

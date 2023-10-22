@@ -6,20 +6,12 @@
         "type": "node-terminal",
         "request": "launch",
         "command": "npm run dev",
-        "cwd": "${workspaceFolder}/client",
+        "cwd": "${workspaceFolder}",
         "serverReadyAction": {
           "pattern": "- Local:.+(https?://.+)",
           "uriFormat": "%s",
           "action": "debugWithChrome"
         }
-      },
-      {
-        "name": "Local server",
-        "type": "python",
-        "request": "launch",
-        "program": "server/lambda/local.py",
-        "console": "integratedTerminal",
-        "justMyCode": true
       }
     ]
   }

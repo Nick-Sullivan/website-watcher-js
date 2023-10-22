@@ -27,10 +27,8 @@ locals {
   aws_account_id            = data.aws_caller_identity.identity.account_id
   automated_tester_username = "nick.dave.sullivan+testing@gmail.com"
   root_dir                  = "${path.root}/../.."
-  website_dir               = "${local.root_dir}/client"
-  server_dir                = "${local.root_dir}/server"
-  bruno_dir                 = "${local.server_dir}/bruno"
-  lambda_dir                = "${local.server_dir}/lambda"
+  bruno_dir                 = "${local.root_dir}/bruno"
+  lambda_dir                = "${local.root_dir}/lambda"
 
   lambda_names = {
     "create_website"   = "${local.prefix}-CreateWebsite"

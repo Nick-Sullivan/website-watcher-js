@@ -3,7 +3,7 @@ let aws = require("@aws-sdk/client-ssm");
 let dotenv = require("dotenv");
 let fs = require("fs");
 
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: ".env" });
 
 let isLocal =
     (process.env.USE_LOCAL_SERVER ?? "false").toLowerCase() === "true";
@@ -31,5 +31,5 @@ client.send(new aws.GetParametersCommand(input)).then((response) => {
         }
         content += `${name}=${value}\r\n`;
     }
-    fs.writeFileSync(".env", content);
+    fs.writeFileSync(".env.local", content);
 });

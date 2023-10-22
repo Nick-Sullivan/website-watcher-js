@@ -1,8 +1,8 @@
 {
     "python.analysis.extraPaths": [
-        "./server/lambda/",
-        "./server/lambda/handler",
-        "./server/lambda/layer/python",
+        "./lambda/",
+        "./lambda/handler",
+        "./lambda/layer/python",
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,

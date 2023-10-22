@@ -19,12 +19,14 @@ provider "aws" {
   }
 }
 
+data "aws_caller_identity" "identity" {}
+
 locals {
   prefix           = "WebsiteWatcherJs-${title(var.environment)}"
+  prefix_lower     = "website-watcher-js-${lower(var.environment)}"
   prefix_parameter = "/WebsiteWatcherJs/${title(var.environment)}"
-  domain           = "websitewatcherjs-${lower(var.environment)}.com"
   root_dir         = "${path.root}/../.."
-  website_dir      = "${local.root_dir}/client"
+  lambda_dir       = "${local.root_dir}/lambda"
 
   tags = {
     Project     = "Website Watcher JS"

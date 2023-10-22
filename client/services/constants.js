@@ -1,1 +1,1 @@
-export const COOKIE_ID_TOKEN = "idToken";
+export const COOKIE_KEY_ID_TOKEN = "idToken";

@@ -63,19 +63,19 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Initialise terraform state (foundation)
-        working-directory: terraform/foundation
+        working-directory: server/terraform/foundation
         run: terraform init -backend-config "key=website_watcher_js/${{env.ENVIRONMENT}}/foundation/terraform.tfstate"
 
       - name: Apply terraform state (foundation)
-        working-directory: terraform/foundation
+        working-directory: server/terraform/foundation
         run: terraform apply -auto-approve -var="environment=${{env.ENVIRONMENT}}"
 
       - name: Initialise terraform state (infrastructure)
-        working-directory: terraform/infrastructure
+        working-directory: server/terraform/infrastructure
         run: terraform init -backend-config "key=website_watcher_js/${{env.ENVIRONMENT}}/infrastructure/terraform.tfstate"
 
       - name: Apply terraform state (infrastructure)
-        working-directory: terraform/infrastructure
+        working-directory: server/terraform/infrastructure
         run: terraform apply -auto-approve -var="environment=${{env.ENVIRONMENT}}"
 
   build_website:
@@ -117,11 +117,11 @@ jobs:
         run: npm run build
 
       - name: Initialise terraform state
-        working-directory: terraform/website_deploy
+        working-directory: client/terraform/website_deploy
         run: terraform init -backend-config "key=website_watcher_js/${{env.ENVIRONMENT}}/website_deploy/terraform.tfstate"
 
       - name: Apply terraform state
-        working-directory: terraform/website_deploy
+        working-directory: client/terraform/website_deploy
         run: terraform apply -auto-approve -var="environment=${{env.ENVIRONMENT}}"
 
   api_tests:

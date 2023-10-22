@@ -47,7 +47,7 @@ module "template_files" {
   # https://registry.terraform.io/modules/hashicorp/dir/template/latest
   depends_on = [aws_s3_bucket.website]
   source     = "hashicorp/dir/template"
-  base_dir   = "${local.website_dir}/out"
+  base_dir   = "${local.root_dir}/out"
 }
 
 resource "aws_s3_object" "static_files" {

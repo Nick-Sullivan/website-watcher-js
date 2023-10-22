@@ -3,16 +3,18 @@
 import json
 import os
 import sys
-from typing import Dict
+from typing import Annotated, Dict
 
 import boto3
+import jwt
 import uvicorn
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-sys.path.append('server/lambda/')
-sys.path.append('server/lambda/layer/python/')
+sys.path.append('lambda/')
+sys.path.append('lambda/layer/python/')
+
 
 app = FastAPI(title="WebsiteWatcherJs")
 app.add_middleware(
@@ -23,6 +25,14 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+def parse_user(req: Request) -> str:
+    token = req.headers['authentication'].split(' ')[-1]
+    token_header = jwt.get_unverified_header(token)
+    decoded = jwt.decode(jwt=token, algorithms=[token_header['alg']], options={"verify_signature": False})
+    user = decoded['cognito:username']
+    return user
+
+
 @app.post("/websites")
 def create_websites(body: Dict):
     import handler.create_website
@@ -30,30 +40,30 @@ def create_websites(body: Dict):
 
 
 @app.get("/websites")
-def get_websites():
+def get_websites(user: Annotated[str, Depends(parse_user)]):
     import handler.get_websites
-    return invoke(handler.get_websites.get_websites, {})
+    return invoke(handler.get_websites.get_websites, body={}, user=user)
 
 
 @app.get("/websites/{website_id}")
-def get_website(website_id):
+def get_website(website_id, user: Annotated[str, Depends(parse_user)]):
     import handler.get_website
     pathParams = {'website_id': website_id}
-    return invoke(handler.get_website.get_website, {}, pathParams)
+    return invoke(handler.get_website.get_website, body={}, user=user, pathParams=pathParams)
 
 
 @app.delete("/websites/{website_id}")
-def delete_websites(website_id):
+def delete_websites(website_id, user: Annotated[str, Depends(parse_user)]):
     import handler.delete_website
     pathParams = {'website_id': website_id}
-    return invoke(handler.delete_website.delete_website, {}, pathParams)
+    return invoke(handler.delete_website.delete_website, body={}, user=user, pathParams=pathParams)
 
 
-def invoke(func, body, pathParams=None):
+def invoke(func, body: Dict, user: str, pathParams=None):
     
     event = {
         'body': json.dumps(body),
-        'requestContext': {'authorizer': {'claims': {'cognito:username': os.environ['COGNITO_USER_ID']}}},
+        'requestContext': {'authorizer': {'claims': {'cognito:username': user}}},
         'pathParameters': pathParams,
     }
     response = func(event)
@@ -65,9 +75,9 @@ def invoke(func, body, pathParams=None):
 
 
 def load_parameters():
-    load_dotenv('../../.env')
+    load_dotenv('../.env')
 
-    if os.environ['USE_LOCAL_INFRA'].lower() == 'true':
+    if os.environ.get('USE_LOCAL_INFRA', 'false').lower() == 'true':
         return 
 
     env = os.environ['ENVIRONMENT'].upper()
