@@ -71,13 +71,13 @@ resource "aws_ssm_parameter" "cognito_user_pool_id" {
 resource "aws_ssm_parameter" "db_scrape_arn" {
   name  = "${local.prefix_parameter}/Db/Scrape/Arn"
   type  = "String"
-  value = aws_dynamodb_table.websites.arn
+  value = aws_dynamodb_table.scrape.arn
 }
 
 resource "aws_ssm_parameter" "db_scrape_name" {
   name  = "${local.prefix_parameter}/Db/Scrape/Name"
   type  = "String"
-  value = aws_dynamodb_table.websites.name
+  value = aws_dynamodb_table.scrape.name
 }
 
 resource "aws_ssm_parameter" "db_website_arn" {

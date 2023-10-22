@@ -3,6 +3,7 @@
 import json
 import os
 import sys
+from typing import Dict
 
 import boto3
 import uvicorn
@@ -23,9 +24,9 @@ app.add_middleware(
 )
 
 @app.post("/websites")
-def create_websites():
+def create_websites(body: Dict):
     import handler.create_website
-    return invoke(handler.create_website.create_website, {})
+    return invoke(handler.create_website.create_website, body)
 
 
 @app.get("/websites")
@@ -34,14 +35,31 @@ def get_websites():
     return invoke(handler.get_websites.get_websites, {})
 
 
-def invoke(func, body):
+@app.get("/websites/{website_id}")
+def get_website(website_id):
+    import handler.get_website
+    pathParams = {'website_id': website_id}
+    return invoke(handler.get_website.get_website, {}, pathParams)
+
+
+@app.delete("/websites/{website_id}")
+def delete_websites(website_id):
+    import handler.delete_website
+    pathParams = {'website_id': website_id}
+    return invoke(handler.delete_website.delete_website, {}, pathParams)
+
+
+def invoke(func, body, pathParams=None):
+    
     event = {
         'body': json.dumps(body),
-        'requestContext': {'authorizer': {'claims': {'cognito:username': os.environ['COGNITO_USER_ID']}}}
+        'requestContext': {'authorizer': {'claims': {'cognito:username': os.environ['COGNITO_USER_ID']}}},
+        'pathParameters': pathParams,
     }
     response = func(event)
     if response['statusCode'] == 200:
-        return json.loads(response['body'])
+        if 'body' in response:
+            return json.loads(response['body'])
     else:
         raise HTTPException(status_code=response['statusCode'], detail=json.loads(response['body']))
 

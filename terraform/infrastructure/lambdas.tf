@@ -94,6 +94,10 @@ resource "aws_iam_role" "delete_website" {
     policy = data.aws_iam_policy_document.websites_db_delete.json
   }
   inline_policy {
+    name   = "QueryWebsiteDb"
+    policy = data.aws_iam_policy_document.websites_db_query.json
+  }
+  inline_policy {
     name   = "DeleteScrapeDb"
     policy = data.aws_iam_policy_document.scrape_db_delete.json
   }

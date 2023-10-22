@@ -4,6 +4,9 @@ on:
   push:
     branches: ["stage"]
 
+env:
+  IS_CICD: "true"
+
 permissions:
   contents: read
 

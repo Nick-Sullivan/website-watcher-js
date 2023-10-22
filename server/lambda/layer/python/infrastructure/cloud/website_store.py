@@ -16,7 +16,6 @@ class WebsiteStore:
 
     def create(self, model: Website):
         assert isinstance(model, Website)
-
         item = WebsiteItem(
             user_id=model.user_id,
             website_id=model.website_id,

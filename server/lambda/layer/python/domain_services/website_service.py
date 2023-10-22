@@ -43,6 +43,7 @@ def get_websites(request: GetWebsitesRequest) -> List[Website]:
     
 
 def delete_website(request: DeleteWebsiteRequest):
+    website_store.get(request.user_id, request.website_id)  # raise exception if not exists
     scrapes = scrape_store.get_list(request.user_id, request.website_id)
     for scrape in scrapes:
         screenshot_store.delete(scrape)
