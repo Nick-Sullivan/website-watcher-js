@@ -25,6 +25,7 @@ locals {
   prefix           = "WebsiteWatcherJs-${title(var.environment)}"
   prefix_lower     = "website-watcher-js-${lower(var.environment)}"
   prefix_parameter = "/WebsiteWatcherJs/${title(var.environment)}"
+  aws_account_id   = data.aws_caller_identity.identity.account_id
   root_dir         = "${path.root}/../.."
   lambda_dir       = "${local.root_dir}/lambda"
 
