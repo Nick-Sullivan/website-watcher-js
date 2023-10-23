@@ -16,7 +16,6 @@ export const getCatFacts = async () => {
 export const getWatchers = async () => {
     const url = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/websites`;
     const idToken = getCookie(COOKIE_KEY_ID_TOKEN);
-    console.log(idToken);
     const headers = { Authorization: `Bearer ${idToken}` };
 
     const rawResponse = await fetch(url, {
@@ -29,7 +28,7 @@ export const getWatchers = async () => {
     console.log(response);
 
     const watchers = response["websites"].map(
-        (item, index) => new Watcher(index.toString(), item.name, item.url)
+        (item, index) => new Watcher(item.website_id, item.name, item.url)
     );
 
     return watchers;

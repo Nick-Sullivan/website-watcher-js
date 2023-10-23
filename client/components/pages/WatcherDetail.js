@@ -1,34 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, ListGroup } from "flowbite-react";
 import { Scrape } from "@/models/Scrape";
 import { Spinner } from "flowbite-react";
 import Image from "next/image";
 import { HiOutlineArrowLeft } from "react-icons/hi";
 import ScrapeListItem from "@/components/ScrapeListItem";
+import { getScrapes, getScreenshot } from "@/services/scrapeApi";
 
-const WatcherDetail = ({ selection, deselectItem }) => {
+const WatcherDetail = ({ watcher, deselectWatcher }) => {
     const [isImageLoading, setIsImageLoading] = useState(false);
-    const [selectedId, setSelectedId] = useState(null);
+    const [selectedScrapeId, setSelectedScrapeId] = useState(null);
     const [image, setImage] = useState("/images/profile.jpg");
-    const [scrapes, setScrapes] = useState([
-        new Scrape("a", "2023-10-13"),
-        new Scrape("b", "2023-10-12"),
-        new Scrape("c", "2023-10-11"),
-        new Scrape("d", "2023-10-10"),
-        new Scrape("e", "2023-10-10"),
-        new Scrape("f", "2023-10-10"),
-        new Scrape("g", "2023-10-10"),
-        new Scrape("h", "2023-10-10"),
-        new Scrape("i", "2023-10-10"),
-        new Scrape("j", "2023-10-10"),
-    ]);
+    const [scrapeList, setScrapeList] = useState([]);
+
+    useEffect(() => {
+        console.log("downloading screenshots");
+        downloadScrapes();
+    }, []);
+
+    const downloadScrapes = async () => {
+        setScrapeList([]);
+        const scrapeResult = await getScrapes(watcher.id);
+        setScrapeList(scrapeResult);
+    };
 
     const loadImage = async (index) => {
         setIsImageLoading(true);
         setImage("");
-        setSelectedId(scrapes[index].id);
-        await new Promise((r) => setTimeout(r, 2000));
-        setImage("/images/profile.jpg");
+        setSelectedScrapeId(scrapeList[index].id);
+        const screenshotUrl = await getScreenshot(
+            watcher.id,
+            scrapeList[index].id
+        );
+        setImage(screenshotUrl);
         setIsImageLoading(false);
     };
 
@@ -57,7 +61,7 @@ const WatcherDetail = ({ selection, deselectItem }) => {
                 <Card className="bg-gray-200">
                     <div className="flex flex-row">
                         <Button
-                            onClick={deselectItem}
+                            onClick={deselectWatcher}
                             color="gray"
                             className="w-10"
                         >
@@ -65,22 +69,22 @@ const WatcherDetail = ({ selection, deselectItem }) => {
                         </Button>
                         <div className="flex-col px-5">
                             <h5 className="flex justify-center font-bold text-gray-900">
-                                {selection.name}
+                                {watcher.name}
                             </h5>
                             <p className="flex justify-center text-gray-700">
-                                {selection.url}
+                                {watcher.url}
                             </p>
                         </div>
                     </div>
                 </Card>
                 <div className="flex-col overflow-y-auto">
                     <ListGroup>
-                        {scrapes.map((item, index) => (
+                        {scrapeList.map((item, index) => (
                             <ScrapeListItem
                                 key={index}
-                                heading={item.name}
-                                subheading={""}
-                                isSelected={selectedId == item.id}
+                                heading={item.getDate()}
+                                subheading={item.getTime()}
+                                isSelected={selectedScrapeId == item.id}
                                 onClick={() => loadImage(index)}
                             />
                         ))}

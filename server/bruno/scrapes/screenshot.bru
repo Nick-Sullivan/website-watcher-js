@@ -1,11 +1,11 @@
 meta {
-  name: scrapes
+  name: screenshot
   type: http
-  seq: 1
+  seq: 3
 }
 
 get {
-  url: {{URL}}/websites/10909919-68a1-47f2-b7ab-82d65e63526f/scrapes
+  url: {{URL}}/websites/10909919-68a1-47f2-b7ab-82d65e63526f/scrapes/2023-10-23T21:48:10.338172Z/screenshot
   body: none
   auth: bearer
 }
@@ -21,5 +21,5 @@ auth:bearer {
 
 assert {
   res.status: eq 200
-  res.body.scrapes: isDefined
+  res.body.scrape_id: isDefined
 }

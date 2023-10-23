@@ -9,45 +9,43 @@ import AuthGuard from "@/components/AuthGuard";
 
 export default function Watchers() {
     const [isAuthorising, setIsAuthorising] = useState(true);
-    const [selection, setSelection] = useState(null);
+    const [selectedWatcher, setSelectedWatcher] = useState(null);
     const [isSelected, setIsSelected] = useState(false);
-    const [listItems, setListItems] = useState([]);
+    const [watcherList, setWatcherList] = useState([]);
 
     useEffect(() => {
         if (isAuthorising) {
             return;
         }
-        console.log("downloading items");
         downloadList();
     }, [isAuthorising]);
 
-    const selectItem = (index) => {
-        console.log("Selecting item");
-        setSelection(listItems[index]);
+    const selectWatcher = (index) => {
+        setSelectedWatcher(watcherList[index]);
         setIsSelected(true);
     };
 
-    const deselectItem = () => {
+    const deselectWatcher = () => {
         setIsSelected(false);
-        setSelection(null);
+        setSelectedWatcher(null);
     };
 
     const downloadList = async () => {
-        setListItems([]);
+        setWatcherList([]);
         const watchers = await getWatchers();
-        setListItems(watchers);
+        setWatcherList(watchers);
     };
 
     const createPage = () => {
         if (isSelected) {
             return (
                 <WatcherDetail
-                    selection={selection}
-                    deselectItem={deselectItem}
+                    watcher={selectedWatcher}
+                    deselectWatcher={deselectWatcher}
                 />
             );
         } else {
-            return <WatcherList items={listItems} onClick={selectItem} />;
+            return <WatcherList items={watcherList} onClick={selectWatcher} />;
         }
     };
 
