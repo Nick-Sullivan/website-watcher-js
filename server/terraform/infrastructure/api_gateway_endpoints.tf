@@ -54,12 +54,6 @@ locals {
     aws_api_gateway_method_response.update_website_200,
     aws_api_gateway_method_response.website_options_200,
     aws_api_gateway_method_response.websites_options_200,
-
-    aws_api_gateway_integration_response.website_options,
-    aws_api_gateway_integration_response.websites_options,
-    aws_api_gateway_integration_response.scrapes_options,
-    aws_api_gateway_integration_response.scrape_website_options,
-    aws_api_gateway_integration_response.screenshot_options,
   ]
 }
 
@@ -103,7 +97,6 @@ resource "aws_api_gateway_method_response" "get_websites_200" {
   }
 }
 
-
 resource "aws_api_gateway_method" "create_website" {
   rest_api_id   = aws_api_gateway_rest_api.gateway.id
   resource_id   = aws_api_gateway_resource.websites.id
@@ -142,17 +135,13 @@ resource "aws_api_gateway_method" "websites_options" {
 }
 
 resource "aws_api_gateway_integration" "websites_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.websites.id
-  http_method = aws_api_gateway_method.websites_options.http_method
-  type        = "MOCK"
-  request_templates = {
-    "application/json" = <<EOF
-        {
-            "statusCode" : 200
-        }
-    EOF
-  }
+  rest_api_id             = aws_api_gateway_rest_api.gateway.id
+  resource_id             = aws_api_gateway_resource.websites.id
+  http_method             = aws_api_gateway_method.websites_options.http_method
+  uri                     = aws_lambda_function.options.invoke_arn
+  content_handling        = "CONVERT_TO_TEXT"
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
 }
 
 resource "aws_api_gateway_method_response" "websites_options_200" {
@@ -160,29 +149,11 @@ resource "aws_api_gateway_method_response" "websites_options_200" {
   resource_id = aws_api_gateway_resource.websites.id
   http_method = aws_api_gateway_integration.websites_options.http_method
   status_code = "200"
-
-  response_models = {
-    "application/json" = "Empty"
-  }
-
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers"     = true
     "method.response.header.Access-Control-Allow-Methods"     = true
     "method.response.header.Access-Control-Allow-Origin"      = true
     "method.response.header.Access-Control-Allow-Credentials" = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "websites_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.websites.id
-  http_method = aws_api_gateway_method_response.websites_options_200.http_method
-  status_code = "200"
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-    "method.response.header.Access-Control-Allow-Methods"     = "'GET,POST,OPTIONS'"
-    "method.response.header.Access-Control-Allow-Origin"      = "'${local.allowed_origins}'"
-    "method.response.header.Access-Control-Allow-Credentials" = "'true'"
   }
 }
 
@@ -311,17 +282,13 @@ resource "aws_api_gateway_method" "website_options" {
 }
 
 resource "aws_api_gateway_integration" "website_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.website.id
-  http_method = aws_api_gateway_method.website_options.http_method
-  type        = "MOCK"
-  request_templates = {
-    "application/json" = <<EOF
-        {
-            "statusCode" : 200
-        }
-    EOF
-  }
+  rest_api_id             = aws_api_gateway_rest_api.gateway.id
+  resource_id             = aws_api_gateway_resource.website.id
+  http_method             = aws_api_gateway_method.website_options.http_method
+  uri                     = aws_lambda_function.options.invoke_arn
+  content_handling        = "CONVERT_TO_TEXT"
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
 }
 
 resource "aws_api_gateway_method_response" "website_options_200" {
@@ -329,27 +296,11 @@ resource "aws_api_gateway_method_response" "website_options_200" {
   resource_id = aws_api_gateway_resource.website.id
   http_method = aws_api_gateway_integration.website_options.http_method
   status_code = "200"
-
-  response_models = {
-    "application/json" = "Empty"
-  }
-
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "website_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.website.id
-  http_method = aws_api_gateway_method_response.website_options_200.http_method
-  status_code = "200"
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,DELETE,PUT,OPTIONS'"
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Allow-Headers"     = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
 
@@ -400,17 +351,13 @@ resource "aws_api_gateway_method" "scrapes_options" {
 }
 
 resource "aws_api_gateway_integration" "scrapes_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.scrapes.id
-  http_method = aws_api_gateway_method.scrapes_options.http_method
-  type        = "MOCK"
-  request_templates = {
-    "application/json" = <<EOF
-        {
-            "statusCode" : 200
-        }
-    EOF
-  }
+  rest_api_id             = aws_api_gateway_rest_api.gateway.id
+  resource_id             = aws_api_gateway_resource.scrapes.id
+  http_method             = aws_api_gateway_method.scrapes_options.http_method
+  uri                     = aws_lambda_function.options.invoke_arn
+  content_handling        = "CONVERT_TO_TEXT"
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
 }
 
 resource "aws_api_gateway_method_response" "scrapes_options_200" {
@@ -418,27 +365,11 @@ resource "aws_api_gateway_method_response" "scrapes_options_200" {
   resource_id = aws_api_gateway_resource.scrapes.id
   http_method = aws_api_gateway_integration.scrapes_options.http_method
   status_code = "200"
-
-  response_models = {
-    "application/json" = "Empty"
-  }
-
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "scrapes_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.scrapes.id
-  http_method = aws_api_gateway_method_response.scrapes_options_200.http_method
-  status_code = "200"
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,OPTIONS'"
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Allow-Headers"     = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
 
@@ -534,17 +465,13 @@ resource "aws_api_gateway_method" "screenshot_options" {
 }
 
 resource "aws_api_gateway_integration" "screenshot_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.screenshot.id
-  http_method = aws_api_gateway_method.screenshot_options.http_method
-  type        = "MOCK"
-  request_templates = {
-    "application/json" = <<EOF
-        {
-            "statusCode" : 200
-        }
-    EOF
-  }
+  rest_api_id             = aws_api_gateway_rest_api.gateway.id
+  resource_id             = aws_api_gateway_resource.screenshot.id
+  http_method             = aws_api_gateway_method.screenshot_options.http_method
+  uri                     = aws_lambda_function.options.invoke_arn
+  content_handling        = "CONVERT_TO_TEXT"
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
 }
 
 resource "aws_api_gateway_method_response" "screenshot_options_200" {
@@ -552,27 +479,11 @@ resource "aws_api_gateway_method_response" "screenshot_options_200" {
   resource_id = aws_api_gateway_resource.screenshot.id
   http_method = aws_api_gateway_integration.screenshot_options.http_method
   status_code = "200"
-
-  response_models = {
-    "application/json" = "Empty"
-  }
-
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
-    "method.response.header.Access-Control-Allow-Origin"  = true
-  }
-}
-
-resource "aws_api_gateway_integration_response" "screenshot_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.screenshot.id
-  http_method = aws_api_gateway_method_response.screenshot_options_200.http_method
-  status_code = "200"
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,OPTIONS'"
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Allow-Headers"     = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
 
@@ -701,17 +612,13 @@ resource "aws_api_gateway_method" "scrape_website_options" {
 }
 
 resource "aws_api_gateway_integration" "scrape_website_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.scrape_website.id
-  http_method = aws_api_gateway_method.scrape_website_options.http_method
-  type        = "MOCK"
-  request_templates = {
-    "application/json" = <<EOF
-        {
-            "statusCode" : 200
-        }
-    EOF
-  }
+  rest_api_id             = aws_api_gateway_rest_api.gateway.id
+  resource_id             = aws_api_gateway_resource.scrape_website.id
+  http_method             = aws_api_gateway_method.scrape_website_options.http_method
+  uri                     = aws_lambda_function.options.invoke_arn
+  content_handling        = "CONVERT_TO_TEXT"
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
 }
 
 resource "aws_api_gateway_method_response" "scrape_website_options_200" {
@@ -719,27 +626,58 @@ resource "aws_api_gateway_method_response" "scrape_website_options_200" {
   resource_id = aws_api_gateway_resource.scrape_website.id
   http_method = aws_api_gateway_integration.scrape_website_options.http_method
   status_code = "200"
-
-  response_models = {
-    "application/json" = "Empty"
-  }
-
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
-    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Allow-Headers"     = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
 
-resource "aws_api_gateway_integration_response" "scrape_website_options" {
-  rest_api_id = aws_api_gateway_rest_api.gateway.id
-  resource_id = aws_api_gateway_resource.scrape_website.id
-  http_method = aws_api_gateway_method_response.scrape_website_options_200.http_method
-  status_code = "200"
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,OPTIONS'"
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-}
 
+# Mock if we wanted to support a single CORS origin
+
+# resource "aws_api_gateway_integration" "websites_options" {
+#   rest_api_id = aws_api_gateway_rest_api.gateway.id
+#   resource_id = aws_api_gateway_resource.websites.id
+#   http_method = aws_api_gateway_method.websites_options.http_method
+#   type        = "MOCK"
+#   request_templates = {
+#     "application/json" = <<EOF
+#         {
+#             "statusCode" : 200
+#         }
+#     EOF
+#   }
+# }
+
+# resource "aws_api_gateway_method_response" "websites_options_200" {
+#   rest_api_id = aws_api_gateway_rest_api.gateway.id
+#   resource_id = aws_api_gateway_resource.websites.id
+#   http_method = aws_api_gateway_integration.websites_options.http_method
+#   status_code = "200"
+
+#   response_models = {
+#     "application/json" = "Empty"
+#   }
+
+#   response_parameters = {
+#     "method.response.header.Access-Control-Allow-Headers"     = true
+#     "method.response.header.Access-Control-Allow-Methods"     = true
+#     "method.response.header.Access-Control-Allow-Origin"      = true
+#     "method.response.header.Access-Control-Allow-Credentials" = true
+#   }
+# }
+
+# resource "aws_api_gateway_integration_response" "websites_options" {
+#   rest_api_id = aws_api_gateway_rest_api.gateway.id
+#   resource_id = aws_api_gateway_resource.websites.id
+#   http_method = aws_api_gateway_method_response.websites_options_200.http_method
+#   status_code = "200"
+#   response_parameters = {
+#     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+#     "method.response.header.Access-Control-Allow-Methods"     = "'GET,POST,OPTIONS'"
+#     "method.response.header.Access-Control-Allow-Origin"      = "'${local.allowed_origins}'"
+#     "method.response.header.Access-Control-Allow-Credentials" = "'true'"
+#   }
+# }

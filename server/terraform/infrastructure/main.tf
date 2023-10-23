@@ -42,11 +42,8 @@ locals {
     "schedule_scrapes" = "${local.prefix}-ScheduleScrapes"
     "scrape_website"   = "${local.prefix}-ScrapeWebsite"
     "update_website"   = "${local.prefix}-UpdateWebsite"
+    "options"          = "${local.prefix}-Options"
   }
-
-  # TODO: allow multiple Access-Control-Allow-Origin by replacing the mock endpoint with a
-  # lambda that parses the request headers and returns the matching origin
-  allowed_origins = "http://localhost:3000"
 
   tags = {
     Project     = "Website Watcher JS"

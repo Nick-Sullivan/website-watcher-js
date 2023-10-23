@@ -1,4 +1,3 @@
-# NEW
 
 data "archive_file" "layer" {
   type        = "zip"
@@ -13,12 +12,6 @@ data "archive_file" "handler" {
   excludes    = ["__pycache__.py"]
   output_path = "${local.lambda_dir}/zip/handler.zip"
 }
-
-# OLD
-
-
-
-
 
 resource "aws_lambda_layer_version" "layer" {
   filename            = "${local.lambda_dir}/zip/layer.zip"
@@ -394,4 +387,28 @@ resource "aws_iam_role" "update_website" {
     name   = "WriteToWebsiteDb"
     policy = data.aws_iam_policy_document.websites_db_put.json
   }
+}
+
+resource "aws_lambda_function" "options" {
+  filename         = data.archive_file.handler.output_path
+  function_name    = local.lambda_names["options"]
+  handler          = "options.options"
+  layers           = []
+  role             = aws_iam_role.options.arn
+  runtime          = "python3.9"
+  timeout          = 10
+  source_code_hash = data.archive_file.handler.output_base64sha256
+  depends_on       = [aws_cloudwatch_log_group.all]
+  environment {
+    variables = {
+      "ENVIRONMENT" : var.environment,
+    }
+  }
+}
+
+resource "aws_iam_role" "options" {
+  name                = local.lambda_names["options"]
+  description         = "Allows Lambda to be invoked"
+  assume_role_policy  = data.aws_iam_policy_document.lambda_assume_role.json
+  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
 }
