@@ -14,11 +14,10 @@ export const getCatFacts = async () => {
 };
 
 export const getWatchers = async () => {
-    // return await getCatFacts();
     const url = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/websites`;
     const idToken = getCookie(COOKIE_KEY_ID_TOKEN);
     console.log(idToken);
-    const headers = { Authentication: `Bearer ${idToken}` };
+    const headers = { Authorization: `Bearer ${idToken}` };
 
     const rawResponse = await fetch(url, {
         method: "GET",
@@ -29,5 +28,9 @@ export const getWatchers = async () => {
     const response = await rawResponse.json();
     console.log(response);
 
-    return [];
+    const watchers = response["websites"].map(
+        (item, index) => new Watcher(index.toString(), item.name, item.url)
+    );
+
+    return watchers;
 };

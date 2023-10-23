@@ -26,8 +26,9 @@ def get_websites(event, context=None):
         'headers': {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-            'Access-Control-Allow-Origin': 'http://localhost:3000/',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
             'Access-Control-Allow-Methods': 'GET,OPTIONS',
+            'Access-Control-Allow-Credentials': 'true',
         }}
 
 

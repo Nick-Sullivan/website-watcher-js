@@ -44,6 +44,10 @@ locals {
     "update_website"   = "${local.prefix}-UpdateWebsite"
   }
 
+  # TODO: allow multiple Access-Control-Allow-Origin by replacing the mock endpoint with a
+  # lambda that parses the request headers and returns the matching origin
+  allowed_origins = "http://localhost:3000"
+
   tags = {
     Project     = "Website Watcher JS"
     Environment = var.environment

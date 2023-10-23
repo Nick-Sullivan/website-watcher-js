@@ -96,11 +96,13 @@ resource "aws_api_gateway_method_response" "get_websites_200" {
   http_method = aws_api_gateway_integration.get_websites.http_method
   status_code = "200"
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
-    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Allow-Headers"     = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
+
 
 resource "aws_api_gateway_method" "create_website" {
   rest_api_id   = aws_api_gateway_rest_api.gateway.id
@@ -164,9 +166,10 @@ resource "aws_api_gateway_method_response" "websites_options_200" {
   }
 
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = true
-    "method.response.header.Access-Control-Allow-Methods" = true
-    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Allow-Headers"     = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Credentials" = true
   }
 }
 
@@ -176,9 +179,10 @@ resource "aws_api_gateway_integration_response" "websites_options" {
   http_method = aws_api_gateway_method_response.websites_options_200.http_method
   status_code = "200"
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,OPTIONS'"
-    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+    "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Methods"     = "'GET,POST,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"      = "'${local.allowed_origins}'"
+    "method.response.header.Access-Control-Allow-Credentials" = "'true'"
   }
 }
 
@@ -738,3 +742,4 @@ resource "aws_api_gateway_integration_response" "scrape_website_options" {
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
 }
+

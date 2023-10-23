@@ -1,4 +1,5 @@
 
+
 resource "aws_api_gateway_rest_api" "gateway" {
   name = local.prefix
 }
@@ -11,7 +12,6 @@ resource "aws_api_gateway_authorizer" "gateway" {
 }
 
 resource "aws_api_gateway_deployment" "gateway" {
-  depends_on  = [local.all_integrations] # VSCode is lying, this is fine
   rest_api_id = aws_api_gateway_rest_api.gateway.id
   description = "Terraform deployment"
 
@@ -27,11 +27,7 @@ resource "aws_api_gateway_deployment" "gateway" {
     #       calculate a hash against whole resources. Be aware that using whole
     #       resources will show a difference after the initial implementation.
     #       It will stabilize to only change when resources change afterwards.
-    redeployment = sha1(jsonencode(
-      merge(
-        { for key, value in local.all_integrations : key => value.id },
-      )
-    ))
+    redeployment = sha1(jsonencode(local.all_integrations))
   }
 }
 
@@ -42,7 +38,7 @@ resource "aws_api_gateway_stage" "gateway" {
 }
 
 resource "aws_lambda_permission" "gateway" {
-  depends_on    = [local.all_integrations]
+  depends_on    = [aws_api_gateway_deployment.gateway]
   for_each      = local.lambda_names
   function_name = each.value
   statement_id  = "AllowExecutionFromAPIGateway"
