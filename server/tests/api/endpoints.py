@@ -46,6 +46,11 @@ def _get(endpoint):
     return requests.request('GET', f'{base_url}/{endpoint}', headers=headers)
 
 
+def _options(endpoint, origin):
+    headers = {'origin': origin}
+    return requests.request('OPTIONS', f'{base_url}/{endpoint}', headers=headers)
+
+
 def _put(endpoint, data):
     headers = {'Authorization': f'Bearer {authenticate()}'}
     return requests.request(
@@ -53,6 +58,10 @@ def _put(endpoint, data):
         f'{base_url}/{endpoint}',
         data=json.dumps(data),
         headers=headers)
+
+
+def options_website(origin):
+    return _options('websites', origin)
 
 
 def create_website(request):

@@ -19,10 +19,10 @@ def options(event, context=None):
 def get_response_origin(requested_origin):
     env = os.environ['ENVIRONMENT'].lower()
     if env == 'prod':
-        return 'http://websitewatcherjs-prod.com.s3-website-ap-southeast-2.amazonaws.com/'
+        return 'http://websitewatcherjs-prod.com.s3-website-ap-southeast-2.amazonaws.com'
 
     if requested_origin.startswith('http://localhost:'):
         return requested_origin
     else:
-        return f'http://websitewatcherjs-{env}.com.s3-website-ap-southeast-2.amazonaws.com/'
+        return f'http://websitewatcherjs-{env}.com.s3-website-ap-southeast-2.amazonaws.com'
     
