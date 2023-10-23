@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 
+from api_layer.response_service import get_response_headers
 from domain_models.domain import Frequency
 from domain_models.exceptions import InvalidRequestException, LogicalException
 from domain_models.requests import UpdateWebsiteRequest
@@ -10,6 +11,9 @@ from domain_services import website_service
 
 def update_website(event, context=None):
     print(event)
+    request_origin = event.get('headers', {}).get('origin')
+    headers = get_response_headers(request_origin)
+
     cognito_id = event['requestContext']['authorizer']['claims']['cognito:username']
     body = json.loads(event['body'])
     body['user_id'] = cognito_id
@@ -26,12 +30,7 @@ def update_website(event, context=None):
 
     return {
         'statusCode': 200,
-        'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'PUT,OPTIONS',
-        }}
+        'headers': headers}
 
 def _update_website(request_body: Dict) -> Dict:
     

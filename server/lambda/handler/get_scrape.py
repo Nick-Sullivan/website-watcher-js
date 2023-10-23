@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 
+from api_layer.response_service import get_response_headers
 from domain_models.domain import timestamp
 from domain_models.exceptions import InvalidRequestException, LogicalException
 from domain_models.requests import GetScrapeRequest
@@ -10,6 +11,9 @@ from domain_services import scrape_service
 
 def get_scrape(event, context=None):
     print(event)
+
+    request_origin = event.get('headers', {}).get('origin')
+    headers = get_response_headers(request_origin)
 
     cognito_id = event['requestContext']['authorizer']['claims']['cognito:username']
     body = {
@@ -27,12 +31,7 @@ def get_scrape(event, context=None):
     return {
         'statusCode': 200,
         'body': json.dumps(response),
-        'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,OPTIONS',
-        }}
+        'headers': headers}
 
 
 def _get_scrape(request_body: Dict):

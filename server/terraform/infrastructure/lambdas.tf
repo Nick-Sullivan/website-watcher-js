@@ -38,6 +38,7 @@ resource "aws_lambda_function" "create_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
@@ -70,9 +71,10 @@ resource "aws_lambda_function" "delete_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
-      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
+      "ENVIRONMENT" : var.environment,
       "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
       "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
 }
@@ -116,6 +118,7 @@ resource "aws_lambda_function" "get_scrape" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
     }
   }
@@ -144,6 +147,7 @@ resource "aws_lambda_function" "get_scrapes" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
     }
   }
@@ -172,6 +176,7 @@ resource "aws_lambda_function" "get_screenshot" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
       "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
     }
@@ -205,6 +210,7 @@ resource "aws_lambda_function" "get_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
@@ -233,6 +239,7 @@ resource "aws_lambda_function" "get_websites" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
@@ -262,6 +269,7 @@ resource "aws_lambda_function" "preview" {
   ]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
       "USES_PLAYWRIGHT" : "True",
     }
@@ -291,6 +299,7 @@ resource "aws_lambda_function" "schedule_scrapes" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
       "SQS_URL" : aws_sqs_queue.scrape_queue.url,
       "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
@@ -330,10 +339,11 @@ resource "aws_lambda_function" "scrape_website" {
   ]
   environment {
     variables = {
-      "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
-      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
+      "ENVIRONMENT" : var.environment,
       "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
+      "SCREENSHOT_BUCKET_NAME" : data.aws_ssm_parameter.s3_snapshot_name.value,
       "USES_PLAYWRIGHT" : "True",
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
 }
@@ -373,6 +383,7 @@ resource "aws_lambda_function" "update_website" {
   depends_on       = [aws_cloudwatch_log_group.all]
   environment {
     variables = {
+      "ENVIRONMENT" : var.environment,
       "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
     }
   }
@@ -393,7 +404,7 @@ resource "aws_lambda_function" "options" {
   filename         = data.archive_file.handler.output_path
   function_name    = local.lambda_names["options"]
   handler          = "options.options"
-  layers           = []
+  layers           = [aws_lambda_layer_version.layer.arn]
   role             = aws_iam_role.options.arn
   runtime          = "python3.9"
   timeout          = 10

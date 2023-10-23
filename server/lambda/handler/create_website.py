@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 
+from api_layer.response_service import get_response_headers
 from domain_models.domain import Frequency
 from domain_models.exceptions import InvalidRequestException, LogicalException
 from domain_models.requests import CreateWebsiteRequest
@@ -10,6 +11,9 @@ from domain_services import website_service
 
 def create_website(event, context=None):
     print(event)
+
+    request_origin = event.get('headers', {}).get('origin')
+    headers = get_response_headers(request_origin)
 
     cognito_id = event['requestContext']['authorizer']['claims']['cognito:username']
     body = json.loads(event['body'])
@@ -26,12 +30,7 @@ def create_website(event, context=None):
     return {
         'statusCode': 200,
         'body': json.dumps(response),
-        'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST,OPTIONS',
-        }}
+        'headers': headers}
 
         
 def _create_website(request_body: Dict) -> Dict:
@@ -62,9 +61,3 @@ def _fill_defaults(request_body) -> Dict:
 def _populate_enums(request_body) -> Dict:
     request_body['frequency'] = Frequency(request_body['frequency'])
     return request_body
-
-if __name__ == '__main__':
-    _create_website({
-        'user_id': 'test',
-        'name': 'local',
-        'url': 'https://google.com'})

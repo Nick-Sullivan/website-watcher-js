@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 
+from api_layer.response_service import get_response_headers
 from domain_models.exceptions import InvalidRequestException, LogicalException
 from domain_models.requests import GetWebsitesRequest
 from domain_models.validation import validate_request
@@ -9,6 +10,9 @@ from domain_services import website_service
 
 def get_websites(event, context=None):
     print(event)
+
+    request_origin = event.get('headers', {}).get('origin')
+    headers = get_response_headers(request_origin)
 
     cognito_id = event['requestContext']['authorizer']['claims']['cognito:username']
     body = {'user_id': cognito_id}
@@ -23,13 +27,7 @@ def get_websites(event, context=None):
     return {
         'statusCode': 200,
         'body': json.dumps(response),
-        'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-            'Access-Control-Allow-Origin': 'http://localhost:3000',
-            'Access-Control-Allow-Methods': 'GET,OPTIONS',
-            'Access-Control-Allow-Credentials': 'true',
-        }}
+        'headers': headers}
 
 
 def _get_websites(request_body: Dict):

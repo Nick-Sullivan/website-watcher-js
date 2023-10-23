@@ -1,6 +1,7 @@
 import json
 from typing import Dict
 
+from api_layer.response_service import get_response_headers
 from domain_models.exceptions import InvalidRequestException, LogicalException
 from domain_models.requests import DeleteWebsiteRequest
 from domain_models.validation import validate_request
@@ -9,6 +10,9 @@ from domain_services import website_service
 
 def delete_website(event, context=None):
     print(event)
+
+    request_origin = event.get('headers', {}).get('origin')
+    headers = get_response_headers(request_origin)
 
     cognito_id = event['requestContext']['authorizer']['claims']['cognito:username']
     body = {
@@ -24,12 +28,7 @@ def delete_website(event, context=None):
 
     return {
         'statusCode': 200,
-        'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'DELETE,OPTIONS',
-        }}
+        'headers': headers}
 
 
 def _delete_website(request_body: Dict):
