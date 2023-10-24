@@ -16,7 +16,8 @@ module.exports = defineConfig({
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 0 : 0,
     workers: process.env.CI ? 1 : 1,
-    reporter: "html",
+    outputDir: "tests/browser/results",
+    reporter: [["html", { outputFolder: "tests/browser/reports" }]],
     timeout: 10_000,
     use: {
         // headless: false,

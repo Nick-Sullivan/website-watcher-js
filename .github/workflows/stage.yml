@@ -159,6 +159,7 @@ jobs:
         run: pytest tests/api
 
   browser_tests:
+    name: "Browser tests"
     runs-on: ubuntu-latest
     needs: [build_website, api_tests]
     timeout-minutes: 10
@@ -180,11 +181,13 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
+        working-directory: client
         run: npx playwright test
 
       - uses: actions/upload-artifact@v3
+        working-directory: client
         if: always()
         with:
           name: playwright-report
-          path: playwright-report/
+          path: tests/browser/reports/
           retention-days: 30
