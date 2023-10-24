@@ -1,12 +1,14 @@
 const { test, expect } = require("@playwright/test");
 let dotenv = require("dotenv");
 
-test.beforeEach(async ({ page }) => {
+test.beforeAll(async ({}) => {
     let isCicd = (process.env.IS_CICD ?? "false").toLowerCase() === "true";
     if (!isCicd) {
         dotenv.config({ path: ".env" });
     }
+});
 
+test.beforeEach(async ({ page }) => {
     const env = process.env.ENVIRONMENT.toLowerCase();
     await page.goto(
         `http://websitewatcherjs-${env}.com.s3-website-ap-southeast-2.amazonaws.com/`
