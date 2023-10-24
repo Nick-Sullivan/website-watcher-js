@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import { authenticate } from "@/services/auth";
 import WatcherNavbar from "@/components/WatcherNavbar";
@@ -9,14 +10,22 @@ export default function Login() {
     const router = useRouter();
     const [username, setUsername] = useState("nick.dave.sullivan@gmail.com");
     const [password, setPassword] = useState("password");
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(true);
+
+    useEffect(() => {
+        // Only enable the button after hydration, otherwise browser tests can click them too fast
+        setIsLoggingIn(false);
+    }, []);
 
     const submitLogin = async () => {
         setIsLoggingIn(true);
-        const success = await authenticate(username, password);
-        if (success) {
+        const errorMessage = await authenticate(username, password);
+        if (errorMessage == "") {
             router.push("/watchers");
+        } else {
+            toast.error(errorMessage);
         }
+
         setIsLoggingIn(false);
     };
 
@@ -31,8 +40,8 @@ export default function Login() {
     return (
         <main className="h-screen w-screen bg-slate-100">
             <div className="h-full w-full flex flex-col">
+                <Toaster richColors position="top-center" />
                 <WatcherNavbar></WatcherNavbar>
-
                 <form className="flex max-w-md flex-col gap-4">
                     <div>
                         <div className="mb-2 block">

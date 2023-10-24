@@ -33,9 +33,9 @@ export const authenticate = async (username, password) => {
         // console.log("getting cookie");
         // const hasIdToken = getCookie(process.env.NEXT_PUBLIC_COOKIE_ID_TOKEN);
         // console.log(hasIdToken);
-        return true;
+        return "";
     } catch (e) {
         console.log(e);
-        return false;
+        return e.message;
     }
 };

@@ -1,37 +1,40 @@
 {
-    "name": "website-watcher",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "build": "node scripts/load_params.js && next build",
-        "dev": "next dev",
-        "init": "node scripts/load_params.js",
-        "lint": "next lint",
-        "start": "next start"
-    },
-    "prettier": {
-        "tabWidth": 4
-    },
-    "dependencies": {
-        "@aws-sdk/client-cognito-identity-provider": "^3.428.0",
-        "@aws-sdk/client-ssm": "^3.431.0",
-        "aws-crt": "^1.18.0",
-        "cookies-next": "^4.0.0",
-        "dotenv": "^16.3.1",
-        "flowbite": "^1.8.1",
-        "flowbite-react": "^0.6.4",
-        "install": "^0.13.0",
-        "next": "13.5.4",
-        "npm": "^10.2.0",
-        "react": "^18",
-        "react-dom": "^18"
-    },
-    "devDependencies": {
-        "autoprefixer": "^10.4.16",
-        "eslint": "^8",
-        "eslint-config-next": "13.5.4",
-        "eslint-config-prettier": "^9.0.0",
-        "postcss": "^8.4.31",
-        "tailwindcss": "^3.3.3"
-    }
+  "name": "website-watcher",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/load_params.js && next build",
+    "dev": "next dev",
+    "init": "node scripts/load_params.js",
+    "lint": "next lint",
+    "start": "next start"
+  },
+  "prettier": {
+    "tabWidth": 4
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.428.0",
+    "@aws-sdk/client-ssm": "^3.431.0",
+    "aws-crt": "^1.18.0",
+    "cookies-next": "^4.0.0",
+    "dotenv": "^16.3.1",
+    "flowbite": "^1.8.1",
+    "flowbite-react": "^0.6.4",
+    "install": "^0.13.0",
+    "next": "13.5.4",
+    "npm": "^10.2.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "sonner": "^1.0.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.8.8",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.4",
+    "eslint-config-prettier": "^9.0.0",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.3"
+  }
 }
