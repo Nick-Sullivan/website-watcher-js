@@ -326,6 +326,47 @@ resource "aws_iam_role" "schedule_scrapes" {
   }
 }
 
+
+resource "aws_lambda_function" "schedule_scrapes_for_all_users" {
+  filename         = data.archive_file.handler.output_path
+  function_name    = local.lambda_names["schedule_scrapes_for_all_users"]
+  handler          = "schedule_scrapes_for_all_users.schedule_scrapes_for_all_users"
+  layers           = [aws_lambda_layer_version.layer.arn]
+  role             = aws_iam_role.schedule_scrapes_for_all_users.arn
+  runtime          = "python3.9"
+  timeout          = 10
+  source_code_hash = data.archive_file.handler.output_base64sha256
+  depends_on       = [aws_cloudwatch_log_group.all]
+  environment {
+    variables = {
+      "ENVIRONMENT" : var.environment,
+      "SCRAPE_TABLE_NAME" : data.aws_ssm_parameter.db_scrape_name.value,
+      "SQS_URL" : aws_sqs_queue.scrape_queue.url,
+      "WEBSITE_TABLE_NAME" : data.aws_ssm_parameter.db_website_name.value,
+    }
+  }
+}
+
+resource "aws_iam_role" "schedule_scrapes_for_all_users" {
+  name                = local.lambda_names["schedule_scrapes_for_all_users"]
+  description         = "Allows Lambda to add messages to the scrape queue"
+  assume_role_policy  = data.aws_iam_policy_document.lambda_assume_role.json
+  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
+  inline_policy {
+    name   = "ScanWebsiteDb"
+    policy = data.aws_iam_policy_document.websites_db_scan.json
+  }
+  inline_policy {
+    name   = "QueryScrapeDb"
+    policy = data.aws_iam_policy_document.scrape_db_query.json
+  }
+  inline_policy {
+    name   = "UploadToScrapeQueue"
+    policy = data.aws_iam_policy_document.scrape_queue_upload.json
+  }
+}
+
+
 resource "aws_lambda_function" "scrape_website" {
   package_type  = "Image"
   image_uri     = "${data.aws_ssm_parameter.ecr_url.value}@${data.aws_ecr_image.scrape_docker_image.id}"

@@ -3,8 +3,26 @@ from math import ceil
 from typing import List
 
 from domain_models.domain import Frequency, Scrape, Website, now
-from domain_models.requests import ScheduleScrapeRequest
+from domain_models.requests import (
+    ScheduleScrapeForAllUsersRequest,
+    ScheduleScrapeRequest,
+)
 from infrastructure import scrape_queue, scrape_store, website_store
+
+
+def schedule_scrapes_for_all_users(request: ScheduleScrapeForAllUsersRequest) -> List[Website]:
+    websites = website_store.get_all()
+    websites_to_scrape = []
+
+    print(f'websites: {websites}')
+    for website in websites:
+        prev_scrape = scrape_store.get_latest(website.user_id, website.website_id)
+        if not (_is_scrape_needed(website.frequency, prev_scrape)):
+            continue
+        scrape_queue.create(website)
+        websites_to_scrape.append(website)
+
+    return websites_to_scrape
 
 
 def schedule_scrapes(request: ScheduleScrapeRequest) -> List[Website]:
@@ -20,6 +38,7 @@ def schedule_scrapes(request: ScheduleScrapeRequest) -> List[Website]:
         websites_to_scrape.append(website)
 
     return websites_to_scrape
+
 
 def _is_scrape_needed(frequency: Frequency, prev_scrape: Scrape) -> bool:
     # TODO - consider the day according to the locale

@@ -24,6 +24,19 @@ data "aws_iam_policy_document" "websites_db_query" {
   }
 }
 
+data "aws_iam_policy_document" "websites_db_scan" {
+  statement {
+    actions = [
+      "dynamodb:Scan",
+      "dynamodb:GetItem",
+    ]
+    effect = "Allow"
+    resources = [
+      data.aws_ssm_parameter.db_website_arn.value,
+    ]
+  }
+}
+
 data "aws_iam_policy_document" "websites_db_put" {
   statement {
     actions = [

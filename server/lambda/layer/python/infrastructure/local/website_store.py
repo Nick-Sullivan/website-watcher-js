@@ -39,6 +39,10 @@ class FakeWebsiteStore:
                 
         return [item.to_domain_model() for item in items] 
 
+    def get_all(self) -> List[Website]:
+        items = self.cache.values()
+        return [item.to_domain_model() for item in items]
+        
     def delete(self, user_id: str, website_id: str):
         del self.cache[(user_id, website_id)]
     

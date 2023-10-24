@@ -43,6 +43,11 @@ class ScrapeWebsiteRequest:
 
 
 @dataclass
+class ScheduleScrapeForAllUsersRequest:
+    pass
+
+
+@dataclass
 class ScheduleScrapeRequest:
     user_id: str
     ignore_frequency: bool

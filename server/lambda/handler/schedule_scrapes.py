@@ -10,16 +10,10 @@ from domain_services import schedule_service
 def schedule_scrapes(event, context=None):
     print(event)
 
-
-    if is_invoked_from_eventbridge(event):
-        print('Invoked from EventBridge')
-        return _schedule_scrapes({'user_id': 'a0e71016-244b-4a11-b2e4-4026d562e4a0'})
-    else:
-        print('Invoked from API Gateway')
-        cognito_id = event['requestContext']['authorizer']['claims']['cognito:username']
-        body = json.loads(event['body'])
-        body['user_id'] = cognito_id
-        return _schedule_scrapes(body, event.get('headers', {}))
+    cognito_id = event['requestContext']['authorizer']['claims']['cognito:username']
+    body = json.loads(event['body'])
+    body['user_id'] = cognito_id
+    return _schedule_scrapes(body, event.get('headers', {}))
 
 
 def _schedule_scrapes(request_body: Dict, request_headers: Dict):
@@ -50,10 +44,6 @@ def _schedule_scrapes(request_body: Dict, request_headers: Dict):
         'statusCode': 200,
         'body': json.dumps(response),
         'headers': headers}
-
-
-def is_invoked_from_eventbridge(event) -> bool:
-    return event.get('source') == 'aws.events'
 
 
 def _fill_defaults(request_body) -> Dict:

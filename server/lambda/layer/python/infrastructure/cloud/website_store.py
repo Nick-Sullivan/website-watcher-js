@@ -66,6 +66,14 @@ class WebsiteStore:
         items.sort(key=lambda x: x.name)
         return [item.to_domain_model() for item in items]
 
+    def get_all(self) -> List[Website]:
+        response = self.client.scan(
+            TableName=self.table_name,
+        )
+        items = [WebsiteItem.deserialise(item) for item in response['Items']]
+        items.sort(key=lambda x: x.name)
+        return [item.to_domain_model() for item in items]
+
     def delete(self, user_id: str, website_id: str):
         key = {
             'user_id': user_id,

@@ -21,6 +21,8 @@ export const getScrapes = async (websiteId) => {
         return new Scrape(item.scrape_id, dt);
     });
 
+    scrapes.sort((a, b) => b.scrapedAt - a.scrapedAt);
+
     return scrapes;
 };
 

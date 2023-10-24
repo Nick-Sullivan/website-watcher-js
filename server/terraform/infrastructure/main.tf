@@ -31,18 +31,19 @@ locals {
   lambda_dir                = "${local.root_dir}/lambda"
 
   lambda_names = {
-    "create_website"   = "${local.prefix}-CreateWebsite"
-    "delete_website"   = "${local.prefix}-DeleteWebsite"
-    "get_website"      = "${local.prefix}-GetWebsite"
-    "get_websites"     = "${local.prefix}-GetWebsites"
-    "get_scrape"       = "${local.prefix}-GetScrape"
-    "get_scrapes"      = "${local.prefix}-GetScrapes"
-    "get_screenshot"   = "${local.prefix}-GetScreenshot"
-    "preview"          = "${local.prefix}-Preview"
-    "schedule_scrapes" = "${local.prefix}-ScheduleScrapes"
-    "scrape_website"   = "${local.prefix}-ScrapeWebsite"
-    "update_website"   = "${local.prefix}-UpdateWebsite"
-    "options"          = "${local.prefix}-Options"
+    "create_website"                 = "${local.prefix}-CreateWebsite"
+    "delete_website"                 = "${local.prefix}-DeleteWebsite"
+    "get_website"                    = "${local.prefix}-GetWebsite"
+    "get_websites"                   = "${local.prefix}-GetWebsites"
+    "get_scrape"                     = "${local.prefix}-GetScrape"
+    "get_scrapes"                    = "${local.prefix}-GetScrapes"
+    "get_screenshot"                 = "${local.prefix}-GetScreenshot"
+    "preview"                        = "${local.prefix}-Preview"
+    "schedule_scrapes"               = "${local.prefix}-ScheduleScrapes"
+    "schedule_scrapes_for_all_users" = "${local.prefix}-ScheduleScrapesForAllUsers"
+    "scrape_website"                 = "${local.prefix}-ScrapeWebsite"
+    "update_website"                 = "${local.prefix}-UpdateWebsite"
+    "options"                        = "${local.prefix}-Options"
   }
 
   tags = {
