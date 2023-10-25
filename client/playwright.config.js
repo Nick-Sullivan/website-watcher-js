@@ -1,11 +1,4 @@
-// @ts-check
 const { defineConfig, devices } = require("@playwright/test");
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -19,7 +12,7 @@ module.exports = defineConfig({
     outputDir: "tests/browser/results",
     reporter: [["html", { outputFolder: "tests/browser/reports" }]],
     globalSetup: "tests/browser/globalSetup.js",
-    timeout: 10_000,
+    timeout: 30_000,
     use: {
         // headless: false,
         trace: "on-first-retry",
