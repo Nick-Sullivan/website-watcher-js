@@ -39,3 +39,9 @@ terraform apply
 ```
 
 7. To point to a local server, edit the API URL in `.env.local`
+
+8. Run Browser tests
+
+```bash
+npx playwright test
+```

@@ -18,6 +18,7 @@ module.exports = defineConfig({
     workers: process.env.CI ? 1 : 1,
     outputDir: "tests/browser/results",
     reporter: [["html", { outputFolder: "tests/browser/reports" }]],
+    globalSetup: "tests/browser/globalSetup.js",
     timeout: 10_000,
     use: {
         // headless: false,
