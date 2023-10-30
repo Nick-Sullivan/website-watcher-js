@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button } from "flowbite-react";
+import { Button, Modal, Spinner } from "flowbite-react";
 import { getWatchers } from "@/services/watcherApi";
 import WatcherNavbar from "@/components/WatcherNavbar";
 import WatcherDetail from "@/components/pages/WatcherDetail";
 import WatcherList from "@/components/pages/WatcherList";
+import WatcherCreationModal from "@/components/pages/WatcherCreationModal";
 import AuthGuard from "@/components/AuthGuard";
-import { Spinner } from "flowbite-react";
 
-export default function Watchers() {
+export default function WatcherPage() {
     const [isAuthorising, setIsAuthorising] = useState(true);
     const [isListDownloading, setIsListDownloading] = useState(true);
     const [selectedWatcher, setSelectedWatcher] = useState(null);
@@ -27,18 +27,25 @@ export default function Watchers() {
         setIsSelected(true);
     };
 
-    const deselectWatcher = () => {
+    const deselectWatcher = async (reload) => {
         setIsSelected(false);
         setSelectedWatcher(null);
+        if (reload) {
+            await downloadList();
+        }
     };
 
     const downloadList = async () => {
         setIsListDownloading(true);
         setWatcherList([]);
-        await new Promise((r) => setTimeout(r, 2000));
+        // await new Promise((r) => setTimeout(r, 2000));
         const watchers = await getWatchers();
         setWatcherList(watchers);
         setIsListDownloading(false);
+    };
+
+    const onWatcherCreated = async () => {
+        await downloadList();
     };
 
     const createPage = () => {
@@ -49,19 +56,22 @@ export default function Watchers() {
                     deselectWatcher={deselectWatcher}
                 />
             );
-        } else {
-            if (isListDownloading) {
-                return (
-                    <div className="flex flex-1 justify-center items-center">
-                        <Spinner size="xl" />
-                    </div>
-                );
-            } else {
-                return (
-                    <WatcherList items={watcherList} onClick={selectWatcher} />
-                );
-            }
         }
+        if (isListDownloading) {
+            return (
+                <div className="flex flex-1 justify-center items-center">
+                    <Spinner size="xl" />
+                </div>
+            );
+        }
+        return (
+            <>
+                <WatcherCreationModal
+                    onCreate={onWatcherCreated}
+                ></WatcherCreationModal>
+                <WatcherList items={watcherList} onClick={selectWatcher} />
+            </>
+        );
     };
 
     return (

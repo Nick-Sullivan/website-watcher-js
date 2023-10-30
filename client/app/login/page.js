@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { authenticate } from "@/services/auth";
 import WatcherNavbar from "@/components/WatcherNavbar";
 
-export default function Login() {
+export default function LoginPage() {
     const router = useRouter();
     const [username, setUsername] = useState("nick.dave.sullivan@gmail.com");
     const [password, setPassword] = useState("password");
@@ -42,47 +42,52 @@ export default function Login() {
             <div className="h-full w-full flex flex-col">
                 <Toaster richColors position="top-center" />
                 <WatcherNavbar></WatcherNavbar>
-                <form className="flex max-w-md flex-col gap-4">
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="email1" value="Your email" />
+                <div className="flex flex-1 justify-center py-10">
+                    <form className="flex w-80 flex-col gap-4 ">
+                        <div>
+                            <div className="mb-2 block">
+                                <Label htmlFor="email1" value="Your email" />
+                            </div>
+                            <TextInput
+                                defaultValue={username}
+                                disabled={isLoggingIn}
+                                id="email1"
+                                onChange={changeUsername}
+                                placeholder="name@flowbite.com"
+                                required
+                                type="email"
+                            />
                         </div>
-                        <TextInput
-                            defaultValue={username}
-                            disabled={isLoggingIn}
-                            id="email1"
-                            onChange={changeUsername}
-                            placeholder="name@flowbite.com"
-                            required
-                            type="email"
-                        />
-                    </div>
-                    <div>
-                        <div className="mb-2 block">
-                            <Label htmlFor="password1" value="Your password" />
+                        <div>
+                            <div className="mb-2 block">
+                                <Label
+                                    htmlFor="password1"
+                                    value="Your password"
+                                />
+                            </div>
+                            <TextInput
+                                defaultValue={password}
+                                disabled={isLoggingIn}
+                                id="password1"
+                                onChange={changePassword}
+                                required
+                                type="password"
+                            />
                         </div>
-                        <TextInput
-                            defaultValue={password}
+                        <div className="flex items-center gap-2">
+                            <Checkbox id="remember" />
+                            <Label htmlFor="remember">Remember me</Label>
+                        </div>
+                        <Button
                             disabled={isLoggingIn}
-                            id="password1"
-                            onChange={changePassword}
-                            required
-                            type="password"
-                        />
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Checkbox id="remember" />
-                        <Label htmlFor="remember">Remember me</Label>
-                    </div>
-                    <Button
-                        disabled={isLoggingIn}
-                        isProcessing={isLoggingIn}
-                        type="button"
-                        onClick={submitLogin}
-                    >
-                        Submit
-                    </Button>
-                </form>
+                            isProcessing={isLoggingIn}
+                            type="button"
+                            onClick={submitLogin}
+                        >
+                            Submit
+                        </Button>
+                    </form>
+                </div>
             </div>
         </main>
     );

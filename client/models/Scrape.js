@@ -1,7 +1,8 @@
 class Scrape {
-    constructor(id, scrapedAt) {
+    constructor(id, scrapedAt, image = null) {
         this.id = id;
         this.scrapedAt = scrapedAt;
+        this.image = image;
     }
 
     getDate() {

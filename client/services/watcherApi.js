@@ -33,3 +33,39 @@ export const getWatchers = async () => {
 
     return watchers;
 };
+
+export const createWatcher = async (watcherName, watcherUrl) => {
+    const url = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/websites`;
+    const idToken = getCookie(COOKIE_KEY_ID_TOKEN);
+    const headers = { Authorization: `Bearer ${idToken}` };
+
+    const body = {
+        name: watcherName,
+        url: watcherUrl,
+    };
+    const rawResponse = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: headers,
+        credentials: "include",
+    });
+
+    const response = await rawResponse.json();
+    console.log(response);
+
+    const watcher = new Watcher(response.website_id, watcherName, response.url);
+
+    return watcher;
+};
+
+export const deleteWatcher = async (websiteId) => {
+    const url = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/websites/${websiteId}`;
+    const idToken = getCookie(COOKIE_KEY_ID_TOKEN);
+    const headers = { Authorization: `Bearer ${idToken}` };
+
+    const rawResponse = await fetch(url, {
+        method: "DELETE",
+        headers: headers,
+        credentials: "include",
+    });
+};

@@ -1,4 +1,4 @@
-const { test: testBase } = require("@playwright/test");
+const { test: testBase, expect } = require("@playwright/test");
 const { WatcherScreenFixture } = require("./fixtures/watcherScreen");
 const { ParameterStoreFixture } = require("./fixtures/parameterStore");
 const {

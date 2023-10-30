@@ -12,7 +12,7 @@ module.exports = defineConfig({
     outputDir: "tests/browser/results",
     reporter: [["html", { outputFolder: "tests/browser/reports" }]],
     globalSetup: "tests/browser/globalSetup.js",
-    timeout: 30_000,
+    timeout: 60_000,
     use: {
         // headless: false,
         trace: "on-first-retry",

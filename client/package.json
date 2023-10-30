@@ -7,7 +7,8 @@
     "dev": "next dev",
     "init": "node scripts/load_params.js",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "test": "npx playwright test"
   },
   "prettier": {
     "tabWidth": 4

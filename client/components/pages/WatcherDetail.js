@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { Button, Card, ListGroup } from "flowbite-react";
+import { Button, Card, Dropdown, ListGroup } from "flowbite-react";
 import { Scrape } from "@/models/Scrape";
-import { Spinner } from "flowbite-react";
+import { Modal, Spinner } from "flowbite-react";
 import Image from "next/image";
 import {
     HiOutlineArrowLeft,
-    HiOutlineZoomIn,
-    HiOutlineZoomOut,
+    HiExclamation,
+    HiDotsHorizontal,
 } from "react-icons/hi";
 import ScrapeListItem from "@/components/ScrapeListItem";
 import { getScrapes, getScreenshot } from "@/services/scrapeApi";
+import { deleteWatcher } from "@/services/watcherApi";
 
 const WatcherDetail = ({ watcher, deselectWatcher }) => {
     const [isImageLoading, setIsImageLoading] = useState(false);
@@ -18,6 +19,8 @@ const WatcherDetail = ({ watcher, deselectWatcher }) => {
     const [image, setImage] = useState("");
     // const [image, setImage] = useState("/images/profile.jpg");
     const [scrapeList, setScrapeList] = useState([]);
+    const [openModal, setOpenModal] = useState();
+    const props = { openModal, setOpenModal };
 
     useEffect(() => {
         console.log("downloading screenshots");
@@ -33,15 +36,25 @@ const WatcherDetail = ({ watcher, deselectWatcher }) => {
     };
 
     const loadImage = async (index) => {
-        setIsImageLoading(true);
-        setImage("");
         setSelectedScrapeId(scrapeList[index].id);
-        const screenshotUrl = await getScreenshot(
-            watcher.id,
-            scrapeList[index].id
-        );
-        setImage(screenshotUrl);
+        if (scrapeList[index].image === null) {
+            setIsImageLoading(true);
+            setImage("");
+            const screenshotUrl = await getScreenshot(
+                watcher.id,
+                scrapeList[index].id
+            );
+            scrapeList[index].image = screenshotUrl;
+        }
+        setImage(scrapeList[index].image);
         setIsImageLoading(false);
+    };
+
+    const deleteWatcherReq = async () => {
+        console.log("Deleting watcher");
+        console.log(watcher);
+        await deleteWatcher(watcher.id);
+        await deselectWatcher(true);
     };
 
     const ScrapeListView = () => {
@@ -71,8 +84,8 @@ const WatcherDetail = ({ watcher, deselectWatcher }) => {
     };
 
     const ImageView = () => {
-        const height = 1440;
-        const width = 1440;
+        const height = 700;
+        const width = 700;
         if (isImageLoading) {
             return <Spinner size="xl" />;
         }
@@ -114,24 +127,88 @@ const WatcherDetail = ({ watcher, deselectWatcher }) => {
     return (
         <div className="flex w-full">
             <div className="flex w-1/3 flex-col">
-                <Card className="bg-white">
+                <Card className="bg-white overflow-y-auto">
                     <div className="flex flex-row">
                         <Button
-                            onClick={deselectWatcher}
+                            onClick={() => deselectWatcher(false)}
                             color="gray"
-                            className="w-10"
+                            className="w-10 flex-none"
                         >
                             <HiOutlineArrowLeft></HiOutlineArrowLeft>
                         </Button>
-                        <div className="flex-col px-5">
-                            <h5 className="flex justify-center font-bold text-gray-900">
+                        <div className="flex flex-col flex-1 px-5">
+                            <h5
+                                className="flex justify-center font-bold text-gray-900"
+                                data-testid="name"
+                            >
                                 {watcher.name}
                             </h5>
-                            <p className="flex justify-center text-gray-700">
+                            <p
+                                className="flex justify-center text-xs text-gray-700"
+                                data-testid="url"
+                            >
                                 {watcher.url}
                             </p>
                         </div>
+                        <div className="flex flex-none justify-end">
+                            <Dropdown
+                                placement="right"
+                                renderTrigger={() => (
+                                    <span>
+                                        <HiDotsHorizontal />
+                                    </span>
+                                )}
+                            >
+                                <Dropdown.Item>Edit</Dropdown.Item>
+                                <Dropdown.Item
+                                    className="text-red-500"
+                                    onClick={() =>
+                                        props.setOpenModal("dismissible")
+                                    }
+                                >
+                                    Delete
+                                </Dropdown.Item>
+                            </Dropdown>
+                        </div>
                     </div>
+
+                    <Modal
+                        dismissible
+                        show={props.openModal === "dismissible"}
+                        onClose={() => props.setOpenModal(undefined)}
+                    >
+                        <Modal.Header>
+                            <div className="flex flex-row items-center text-red-500">
+                                <HiExclamation />
+                                Warning
+                            </div>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="space-y-6">
+                                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                    Deleting a watcher will delete all
+                                    snapshots. This cannot be undone.
+                                </p>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                color="warning"
+                                // disabled={isCreatingWatcher}
+                                // isProcessing={isCreatingWatcher}
+                                onClick={deleteWatcherReq}
+                            >
+                                Delete
+                            </Button>
+                            <Button
+                                color="gray"
+                                // disabled={isCreatingWatcher}
+                                onClick={() => props.setOpenModal(undefined)}
+                            >
+                                Cancel
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </Card>
                 <ScrapeListView></ScrapeListView>
             </div>
