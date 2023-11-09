@@ -44,4 +44,6 @@ terraform apply
 
 ```bash
 npx playwright test
+npx playwright test tests/browser/when_visiting_watcher_screen.spec.js // to run a subset
+npx playwright test --ui // to run in ui mode
 ```
