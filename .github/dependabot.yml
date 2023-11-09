@@ -4,6 +4,11 @@ updates:
     directory: "/client/"
     schedule:
       interval: "daily"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+
   - package-ecosystem: "pip"
     directory: "/server/"
     schedule:
