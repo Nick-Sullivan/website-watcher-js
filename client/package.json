@@ -14,8 +14,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.450.0",
-    "@aws-sdk/client-ssm": "^3.450.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.451.0",
+    "@aws-sdk/client-ssm": "^3.451.0",
     "aws-crt": "^1.19.0",
     "cookies-next": "^4.0.0",
     "dotenv": "^16.3.1",
