@@ -166,7 +166,7 @@ jobs:
     name: "Browser tests"
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.39.0-jammy
+      image: mcr.microsoft.com/playwright:v1.40.0-jammy
 
     needs: [build_website, api_tests]
     timeout-minutes: 10
