@@ -2,6 +2,7 @@ resource "aws_sqs_queue" "scrape_queue" {
   name                       = "${local.prefix}-ScrapeQueue"
   message_retention_seconds  = 12 * 60 * 60
   visibility_timeout_seconds = 60
+  receive_time_wait_seconds = 20  # to reduce the number of empty receives
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.scrape_dead_letter.arn
     maxReceiveCount     = 1
