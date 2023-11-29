@@ -14,8 +14,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.460.0",
-    "@aws-sdk/client-ssm": "^3.460.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.461.0",
+    "@aws-sdk/client-ssm": "^3.461.0",
     "aws-crt": "^1.19.0",
     "cookies-next": "^4.1.0",
     "dotenv": "^16.3.1",
@@ -26,10 +26,10 @@
     "npm": "^10.2.4",
     "react": "^18",
     "react-dom": "^18",
-    "sonner": "^1.2.3"
+    "sonner": "^1.2.4"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
+    "@playwright/test": "^1.40.1",
     "@types/node": "^20.10.0",
     "autoprefixer": "^10.4.16",
     "eslint": "^8",
