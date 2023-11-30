@@ -14,8 +14,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.461.0",
-    "@aws-sdk/client-ssm": "^3.461.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.462.0",
+    "@aws-sdk/client-ssm": "^3.462.0",
     "aws-crt": "^1.19.0",
     "cookies-next": "^4.1.0",
     "dotenv": "^16.3.1",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.40.1",
-    "@types/node": "^20.10.0",
+    "@types/node": "^20.10.1",
     "autoprefixer": "^10.4.16",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
