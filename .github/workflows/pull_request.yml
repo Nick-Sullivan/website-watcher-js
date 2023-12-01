@@ -1,7 +1,8 @@
 name: "Pull request preview"
 on:
   pull_request:
-    branches: ["stage"]
+    branches:
+      - stage
 
 permissions:
   contents: read
@@ -24,3 +25,10 @@ jobs:
           python-version: "3.9"
           cache: "pip"
           cache-dependency-path: server/requirements.txt
+
+      - name: Install server libraries
+        run: pip install -r server/requirements.txt
+
+      - name: Run server unit tests
+        working-directory: server
+        run: pytest tests/unit
