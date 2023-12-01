@@ -1,7 +1,8 @@
 name: "Pull request preview"
 on:
   pull_request:
-    branches: ["stage"]
+    branches:
+      - stage
 
 permissions:
   contents: read
