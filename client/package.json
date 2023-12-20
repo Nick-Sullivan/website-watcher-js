@@ -14,8 +14,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.476.0",
-    "@aws-sdk/client-ssm": "^3.476.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.477.0",
+    "@aws-sdk/client-ssm": "^3.477.0",
     "aws-crt": "^1.20.0",
     "cookies-next": "^4.1.0",
     "dotenv": "^16.3.1",
@@ -36,6 +36,6 @@
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.7"
+    "tailwindcss": "^3.4.0"
   }
 }
