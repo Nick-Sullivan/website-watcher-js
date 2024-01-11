@@ -14,8 +14,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "^3.485.0",
-    "@aws-sdk/client-ssm": "^3.485.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.489.0",
+    "@aws-sdk/client-ssm": "^3.489.0",
     "aws-crt": "^1.20.1",
     "cookies-next": "^4.1.0",
     "dotenv": "^16.3.1",
@@ -23,14 +23,14 @@
     "flowbite-react": "^0.7.2",
     "install": "^0.13.0",
     "next": "14.0.4",
-    "npm": "^10.2.5",
+    "npm": "^10.3.0",
     "react": "^18",
     "react-dom": "^18",
     "sonner": "^1.3.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.1",
-    "@types/node": "^20.10.8",
+    "@types/node": "^20.11.0",
     "autoprefixer": "^10.4.16",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
