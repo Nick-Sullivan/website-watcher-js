@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 sys.path.append('lambda/')
 sys.path.append('lambda/layer/python/')
 
+os.environ['USES_PLAYWRIGHT'] = 'True'
 
 app = FastAPI(title="WebsiteWatcherJs")
 app.add_middleware(
@@ -26,7 +27,7 @@ app.add_middleware(
 )
 
 def parse_user(req: Request) -> str:
-    token = req.headers['authentication'].split(' ')[-1]
+    token = req.headers['authorization'].split(' ')[-1]
     token_header = jwt.get_unverified_header(token)
     decoded = jwt.decode(jwt=token, algorithms=[token_header['alg']], options={"verify_signature": False})
     user = decoded['cognito:username']
@@ -34,15 +35,29 @@ def parse_user(req: Request) -> str:
 
 
 @app.post("/websites")
-def create_websites(body: Dict):
+def create_websites(body: Dict, user: Annotated[str, Depends(parse_user)]):
     import handler.create_website
-    return invoke(handler.create_website.create_website, body)
+    return invoke(handler.create_website.create_website, body=body, user=user)
+
+
+@app.post("/websites/{website_id}/scrape")
+def scrape_website(website_id, body: Dict, user: Annotated[str, Depends(parse_user)]):
+    import handler.scrape_website
+    pathParams = {'website_id': website_id}
+    return invoke(handler.scrape_website.scrape_website, body=body, user=user, pathParams=pathParams)
 
 
 @app.get("/websites")
 def get_websites(user: Annotated[str, Depends(parse_user)]):
     import handler.get_websites
     return invoke(handler.get_websites.get_websites, body={}, user=user)
+
+
+@app.get("/websites/{website_id}/scrapes")
+def get_scrapes(website_id, user: Annotated[str, Depends(parse_user)]):
+    import handler.get_scrapes
+    pathParams = {'website_id': website_id}
+    return invoke(handler.get_scrapes.get_scrapes, body={}, user=user, pathParams=pathParams)
 
 
 @app.get("/websites/{website_id}")
@@ -57,6 +72,12 @@ def delete_websites(website_id, user: Annotated[str, Depends(parse_user)]):
     import handler.delete_website
     pathParams = {'website_id': website_id}
     return invoke(handler.delete_website.delete_website, body={}, user=user, pathParams=pathParams)
+
+
+@app.post("/websites/preview")
+def preview_websites(body: Dict, user: Annotated[str, Depends(parse_user)]):
+    import handler.preview
+    return invoke(handler.preview.preview, body=body, user=user)
 
 
 def invoke(func, body: Dict, user: str, pathParams=None):

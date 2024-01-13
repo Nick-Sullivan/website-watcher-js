@@ -3,7 +3,6 @@ import json
 import pytest
 from domain_models.domain import create_unique_key
 from handler.preview import preview
-from infrastructure import screenshot_store
 
 
 @pytest.fixture(scope='module')

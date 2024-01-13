@@ -8,7 +8,7 @@ from .endpoints import preview_website
 @pytest.fixture(scope='module')
 def response():
     user_id = create_unique_key()
-    preview_req = {'user_id': user_id, 'url': 'https://google.com'}
+    preview_req = {'user_id': user_id, 'url': 'https://www.reddit.com/'}
     preview_res = preview_website(preview_req)
     yield preview_res
 
