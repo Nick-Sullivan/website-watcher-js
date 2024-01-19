@@ -32,7 +32,7 @@ function Init-Foundation([string]$environment) {
 }
 
 function Init-Infrastructure([string]$environment) {
-    $key = "key=website_watcher_js/$environment/infra/terraform.tfstate"
+    $key = "key=website_watcher_js/$environment/infrastructure/terraform.tfstate"
     Write-Output $key
     Set-Location terraform/infrastructure
     terraform init -backend-config $key -reconfigure
